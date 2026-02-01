@@ -4,30 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="acbedaac-3a21-49d4-ae1d-940f7ddc409b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/kpmg.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/instructions.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/part_1/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/part_1/app.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/part_1/config.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/part_1/data/283_ex1.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/part_1/data/283_ex2.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/part_1/data/283_ex3.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/part_1/data/283_raw.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/part_1/extraction_service.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/part_1/ocr_service.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/part_1/prompts/extraction_prompt.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/part_1/test_extraction.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/part_1/test_ocr.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/part_1/validation_service.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test_azure_setup.py" afterDir="false" />
-    </list>
+    <list default="true" id="acbedaac-3a21-49d4-ae1d-940f7ddc409b" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
