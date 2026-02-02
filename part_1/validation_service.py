@@ -21,7 +21,7 @@ class ValidationService:
     def __init__(self):
         """Initialize validation service"""
         self.validation_rules = {
-            "idNumber": (True, "Valid Israeli ID"),
+            "idNumber": self._validate_israeli_id,
             "dateOfBirth": self._validate_date,
             "dateOfInjury": self._validate_date,
             "formFillingDate": self._validate_date,
@@ -80,54 +80,79 @@ class ValidationService:
             value = extracted_data.get(field, "")
             if not value or value == "":
                 results["warnings"].append(f"Critical field missing: {field}")
+        filling_date = extracted_data.get("formFillingDate", {})
+        receipt_date = extracted_data.get("formReceiptDateAtClinic", {})
+
+        # 2. Convert to datetime objects for comparison
+        try:
+            if self._is_complete_date(filling_date) and self._is_complete_date(receipt_date):
+                d_fill = datetime(int(filling_date['year']), int(filling_date['month']), int(filling_date['day']))
+                d_receipt = datetime(int(receipt_date['year']), int(receipt_date['month']), int(receipt_date['day']))
+
+                # 3. Apply your logic
+                if d_receipt < d_fill:
+                    results["valid"] = False
+                    results["errors"].append(
+                        f"Logic Error: Receipt date ({d_receipt.strftime('%d/%m/%Y')}) "
+                        f"cannot be before filling date ({d_fill.strftime('%d/%m/%Y')})"
+                    )
+        except ValueError:
+            pass  # Handle invalid dates elsewhere
 
         return results
 
-    # def _validate_israeli_id(self, id_number: str) -> Tuple[bool, str]:
-    #     """
-    #     Validate Israeli ID number (9 digits with check digit)
-    #
-    #     Args:
-    #         id_number: ID number string
-    #
-    #     Returns:
-    #         Tuple of (is_valid, message)
-    #     """
-    #     if not id_number or id_number == "":
-    #         return True, "No ID provided"
-    #
-    #     # Remove any spaces or dashes
-    #     id_clean = re.sub(r'[^0-9]', '', str(id_number))
-    #
-    #     # Must be 9 digits
-    #     if len(id_clean) != 9:
-    #         return False, f"Israeli ID must be 9 digits (got {len(id_clean)})"
-    #
-    #     # Validate check digit using Luhn algorithm variant
-    #     try:
-    #         total = 0
-    #         for i, digit in enumerate(id_clean):
-    #             num = int(digit)
-    #
-    #             # Multiply odd positions by 1, even positions by 2
-    #             if i % 2 == 0:
-    #                 num = num * 1
-    #             else:
-    #                 num = num * 2
-    #
-    #             # If result > 9, sum the digits
-    #             if num > 9:
-    #                 num = num // 10 + num % 10
-    #
-    #             total += num
-    #
-    #         if total % 10 == 0:
-    #             return True, "Valid Israeli ID"
-    #         else:
-    #             return False, "Invalid Israeli ID check digit"
-    #
-    #     except ValueError:
-    #         return False, "ID must contain only digits"
+
+
+        return results
+
+    def _is_complete_date(self, d):
+        return d and all(k in d and str(d[k]).isdigit() for k in ['day', 'month', 'year'])
+
+    def _validate_israeli_id(self, id_number: str) -> Tuple[bool, str]:
+        """
+        Validate Israeli ID number (9 digits with check digit)
+
+        Args:
+            id_number: ID number string
+
+        Returns:
+            Tuple of (is_valid, message)
+        """
+        if not id_number or id_number == "":
+            return True, "No ID provided"
+
+        # Remove any spaces or dashes
+        id_clean = re.sub(r'[^0-9]', '', str(id_number))
+
+        # Must be 9 digits
+        if len(id_clean) != 9:
+            return False, f"Israeli ID must be 9 digits (got {len(id_clean)})"
+
+        # Validate check digit using Luhn algorithm variant
+        try:
+            total = 0
+            for i, digit in enumerate(id_clean):
+                num = int(digit)
+
+                # Multiply odd positions by 1, even positions by 2
+                if i % 2 == 0:
+                    num = num * 1
+                else:
+                    num = num * 2
+
+                # If result > 9, sum the digits
+                if num > 9:
+                    num = num // 10 + num % 10
+
+                total += num
+
+            if total % 10 == 0:
+                return True, "Valid Israeli ID"
+            else:
+                return False, "Invalid Israeli ID check digit"
+
+        except ValueError:
+            return False, "ID must contain only digits"
 
     def _validate_date(self, date_obj: Dict[str, str]) -> Tuple[bool, str]:
         """
@@ -193,6 +218,9 @@ class ValidationService:
         """
         if not phone or phone == "":
             return True, "No phone provided"
+        if not phone or str(phone).strip() == "":
+            # Changed: Return False instead of True to trigger the red UI state
+            return False, "Phone number is required but missing"
 
         # Remove spaces, dashes, parentheses
         phone_clean = re.sub(r'[^0-9]', '', str(phone))

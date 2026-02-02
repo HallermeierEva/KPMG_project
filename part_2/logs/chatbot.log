@@ -1,0 +1,5 @@
+2026-02-02 15:17:12,360 - INFO - Phase: collection | User: Unknown
+2026-02-02 15:17:15,688 - INFO - AI Response generated successfully
+2026-02-02 15:18:48,875 - INFO - Phase: collection | User: Unknown
+2026-02-02 15:18:51,982 - INFO - AI Response generated successfully
+2026-02-02 15:27:59,714 - ERROR - Error in chat endpoint: 'NoneType' object has no attribute 'get'
