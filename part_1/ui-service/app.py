@@ -3,10 +3,15 @@ import json
 import os
 from datetime import datetime
 
-# --- STEP 1: IMPORT YOUR SERVICES ---
-from ocr_service import DocumentOCRService
-from extraction_service import FieldExtractionService
-from validation_service import ValidationService
+import sys
+import httpx
+
+# Make shared package importable
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from shared.config import Config
+from shared.logging_config import get_logger
+
+logger = get_logger("ui-service")
 
 # --- CONFIGURATION ---
 st.set_page_config(
@@ -102,29 +107,72 @@ with st.sidebar:
     """)
 
 
-# --- INITIALIZE SERVICES ---
+# --- HTTP CLIENT ---
 @st.cache_resource
-def init_services():
-    try:
-        ocr = DocumentOCRService()
-        extractor = FieldExtractionService()
-        validator = ValidationService()
-        return ocr, extractor, validator, None
-    except Exception as e:
-        return None, None, None, str(e)
+def get_http_client():
+    return httpx.Client(timeout=60.0)
 
 
-ocr_service, extractor, validator, init_error = init_services()
+client = get_http_client()
 
-if init_error:
-    st.error(f"❌ Failed to initialize services: {init_error}")
-    st.stop()
+
+def call_ocr_service(uploaded_file):
+    """Call OCR microservice with uploaded file and return JSON result."""
+    files = {
+        "file": (
+            uploaded_file.name,
+            uploaded_file.getvalue(),
+            uploaded_file.type or "application/octet-stream",
+        )
+    }
+    url = f"{Config.OCR_SERVICE_URL}/api/v1/ocr"
+    logger.info("ui_call_ocr", url=url)
+    resp = client.post(url, files=files)
+    resp.raise_for_status()
+    return resp.json()
+
+
+def call_extraction_service(ocr_result: dict):
+    """Call extraction microservice with OCRResponse JSON."""
+    url = f"{Config.EXTRACTION_SERVICE_URL}/api/v1/extract"
+    logger.info("ui_call_extraction", url=url)
+
+    # --- ADD TRUNCATION LOGIC HERE ---
+    full_text = ocr_result.get("full_text", "")
+
+    # Stop processing once we reach the "Instructions" keywords
+    # This prevents GPT from seeing the back of the form
+    stop_keywords = ["עצמאי נכבד", "דברי הסבר", "עמוד 2 מתוך 2"]
+
+    for word in stop_keywords:
+        if word in full_text:
+            full_text = full_text.split(word)[0]
+            break  # Stop at the first keyword found
+
+    # Update the dictionary with the cleaned text
+    ocr_result["full_text"] = full_text
+    # ---------------------------------
+
+    resp = client.post(url, json=ocr_result)
+    resp.raise_for_status()
+    return resp.json()
+
+
+def call_validation_service(extraction_result: dict):
+    """Call validation microservice with ExtractionResponse JSON."""
+    url = f"{Config.VALIDATION_SERVICE_URL}/api/v1/validate"
+    logger.info("ui_call_validation", url=url)
+    resp = client.post(url, json=extraction_result)
+    resp.raise_for_status()
+    return resp.json()
 
 # --- FILE UPLOAD ---
 st.markdown("### 📤 Upload Form")
-uploaded_file = st.file_uploader( "",
-    type=['pdf', 'jpg', 'png', 'jpeg'],
-    help="Upload a filled National Insurance work injury form"
+uploaded_file = st.file_uploader(
+    "Upload work injury form",
+    type=["pdf", "jpg", "png", "jpeg"],
+    help="Upload a filled National Insurance work injury form",
+    label_visibility="collapsed",
 )
 
 if uploaded_file:
@@ -141,24 +189,24 @@ if uploaded_file:
     # --- PROCESSING PIPELINE ---
     try:
         with st.spinner("🚀 Running AI Pipeline: OCR → GPT-4o Extraction → Validation..."):
-            # 1. Run Azure OCR
-            ocr_result = ocr_service.process_uploaded_file(uploaded_file)
+            # 1. Run Azure OCR microservice
+            ocr_result = call_ocr_service(uploaded_file)
 
-            if not ocr_result["success"]:
-                st.error(f"❌ OCR Failed: {ocr_result['error']}")
+            if not ocr_result.get("success"):
+                st.error(f"❌ OCR Failed: {ocr_result.get('error')}")
                 st.stop()
 
-            # 2. Run GPT-4o Field Extraction
-            extraction_result = extractor.extract_from_file(ocr_result)
+            # 2. Run GPT-4o Field Extraction microservice
+            extraction_result = call_extraction_service(ocr_result)
 
-            if not extraction_result["success"]:
-                st.error(f"❌ Extraction Failed: {extraction_result['error']}")
+            if not extraction_result.get("success"):
+                st.error(f"❌ Extraction Failed: {extraction_result.get('error')}")
                 st.stop()
 
             extracted_data = extraction_result["data"]
 
-            # 3. Run Validation
-            val_result = validator.validate(extracted_data)
+            # 3. Run Validation microservice
+            val_result = call_validation_service(extraction_result)
             comp = val_result["completeness"]
 
         st.success("✅ Processing Complete!")
@@ -330,7 +378,7 @@ if uploaded_file:
             st.markdown("### 📄 Extracted OCR Text")
             st.text_area(
                 "Full OCR Output",
-                ocr_result['full_text'],
+                ocr_result["full_text"],
                 height=400,
                 help="Raw text extracted by Azure Document Intelligence"
             )
@@ -343,7 +391,7 @@ if uploaded_file:
             with col2:
                 st.metric("Lines", len(ocr_result['full_text'].split('\n')))
             with col3:
-                st.metric("Pages", len(ocr_result['structured_content']['pages']))
+                st.metric("Pages", len(ocr_result["structured_content"]["pages"]))
 
         # TAB 4: VALIDATION
         with tab4:

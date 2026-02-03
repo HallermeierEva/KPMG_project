@@ -1,101 +1,191 @@
 # Part 1: Field Extraction from National Insurance Forms
 
-## 🎯 Overview
+## Overview
 
-This system extracts structured data from Israeli National Insurance Institute (ביטוח לאומי) work injury forms using:
-- **Azure Document Intelligence** for OCR
-- **GPT-4o** for intelligent field extraction
-- **Streamlit** for the web interface
+Part 1 is a small microservice-based system that extracts structured data from Israeli National Insurance Institute (ביטוח לאומי) work injury forms (Form 283).
 
-## 📁 Project Structure
+It consists of:
+- An OCR service using Azure Document Intelligence
+- A field-extraction service using Azure OpenAI GPT-4o
+- A validation service that checks IDs, dates, phones, and completeness
+- A Streamlit UI that orchestrates the pipeline and visualises results
+- An offline evaluation script that compares against labeled ground truth
+
+## Project structure (actual layout)
 
 ```
-part1_field_extraction/
-├── app.py                      # Streamlit web interface
-├── ocr_service.py              # Azure Document Intelligence OCR
-├── extraction_service.py       # GPT-4o field extraction
-├── validation_service.py       # Data validation
-├── config.py                   # Configuration
-├── test_ocr.py                 # OCR testing
-├── test_extraction.py          # End-to-end testing
+part_1/
+├── run_part1.sh                    # Orchestrator: starts all services + Streamlit UI
+├── evaluate_ground_truth_accuracy.py  # E2E evaluation against labeled PDFs in data/
+├── requirements.txt
+├── pytest.ini                       # Root pytest config (targets ocr-service/tests)
+├── data/
+│   ├── 283_ex1.pdf
+│   ├── 283_ex2.pdf
+│   ├── 283_ex3.pdf
+│   └── 283_raw.pdf
 ├── prompts/
-│   └── extraction_prompt.txt   # GPT-4o prompt template
-└── data/
-    ├── 283_ex1.pdf
-    ├── 283_ex2.pdf
-    └── 283_ex3.pdf
+│   └── extraction_prompt.txt       # GPT-4o prompt template
+├── shared/
+│   ├── config.py                   # Shared configuration (endpoints, Redis, service URLs)
+│   ├── logging_config.py           # Structured JSON logging
+│   └── models.py                   # Pydantic models used by all services
+├── ocr-service/
+│   ├── app.py                      # FastAPI HTTP API (uvicorn ocr-service.app:app --port 8001)
+│   ├── service.py                  # OCRService wrapper around Azure Document Intelligence
+│   ├── tests/                      # HTTP- and service-level tests
+│   │   ├── test_api.py
+│   │   ├── test_service.py
+│   │   ├── test_performance.py
+│   │   └── test_data/283_ex1.pdf
+│   └── pytest.ini
+├── extraction-service/
+│   ├── app.py                      # FastAPI HTTP API (uvicorn extraction-service.app:app --port 8002)
+│   └── extraction_service.py       # GPT-4o field extraction + post-processing
+├── validation-service/
+│   ├── app.py                      # FastAPI HTTP API (uvicorn validation-service.app:app --port 8003)
+│   └── validation_service.py       # Core validation logic and scoring
+└── ui-service/
+    └── app.py                      # Streamlit UI (streamlit run ui-service/app.py)
 ```
 
-## 🚀 Setup
+## Setup
 
-### 1. Install Dependencies
+### 1. Create environment and install dependencies
+
+From the `part_1` directory:
 
 ```bash
-pip install azure-ai-formrecognizer==3.3.3
-pip install openai==1.12.0
-pip install streamlit==1.31.0
-pip install python-dotenv==1.0.1
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\\Scripts\\activate
+pip install -r requirements.txt
 ```
 
-### 2. Configure Environment
+### 2. Configure environment variables
 
-Create `.env` file:
+All services read configuration from environment variables via `shared/config.py` (and `dotenv` if a `.env` file is present on the Python path).
+
+Required values:
 
 ```env
 # Azure Document Intelligence
-AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT=https://di-candidates-east-us-2.cognitiveservices.azure.com
-AZURE_DOCUMENT_INTELLIGENCE_KEY=your-key-here
+AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT=your-di-endpoint
+AZURE_DOCUMENT_INTELLIGENCE_KEY=your-di-key
 
 # Azure OpenAI
-AZURE_OPENAI_ENDPOINT=https://aoai-candidates-east-us-2.openai.azure.com
-AZURE_OPENAI_KEY=your-key-here
+AZURE_OPENAI_ENDPOINT=your-aoai-endpoint
+AZURE_OPENAI_KEY=your-aoai-key
 AZURE_OPENAI_API_VERSION=2024-02-15-preview
 AZURE_OPENAI_GPT4O_DEPLOYMENT=gpt-4o
+
+# Optional: service URLs when calling from the UI (defaults shown)
+OCR_SERVICE_URL=http://localhost:8001
+EXTRACTION_SERVICE_URL=http://localhost:8002
+VALIDATION_SERVICE_URL=http://localhost:8003
+
+# Optional: Redis cache for OCR results (used by ocr-service/service.py)
+REDIS_HOST=localhost
+REDIS_PORT=6379
 ```
 
-## 🧪 Testing
+You can either:
+- Export these directly in your shell, or
+- Place them in a `.env` file that is loaded by `python-dotenv` before starting the services.
 
-### Test OCR Only
+## Running the system
+
+### Option A: One-step run (recommended during development)
+
+From `part_1`:
 
 ```bash
-python test_ocr.py
+chmod +x run_part1.sh      # first time only
+./run_part1.sh
 ```
 
-### Test Full Pipeline (OCR + Extraction)
+This script will:
+1. Start the OCR FastAPI service on port 8001
+2. Start the Extraction FastAPI service on port 8002
+3. Start the Validation FastAPI service on port 8003
+4. Launch the Streamlit UI in your browser (backed by those three services)
+
+Press Ctrl+C in the terminal to stop all services.
+
+### Option B: Run each service manually
+
+In separate terminals from `part_1`:
 
 ```bash
-python test_extraction.py
+# OCR service
+uvicorn ocr-service.app:app --host 0.0.0.0 --port 8001 --reload
+
+# Extraction service
+uvicorn extraction-service.app:app --host 0.0.0.0 --port 8002 --reload
+
+# Validation service
+uvicorn validation-service.app:app --host 0.0.0.0 --port 8003 --reload
 ```
 
-### Run Web Interface
+Then run the UI:
 
 ```bash
-streamlit run app.py
+streamlit run ui-service/app.py
 ```
 
-Then upload a PDF and see the results!
+## Testing
 
-## 📊 Features
+### 1. OCR service test suite
 
-### OCR Capabilities
-- ✅ Extracts text from PDF and images
-- ✅ Handles Hebrew and English
-- ✅ Preserves document structure
-- ✅ Identifies tables and layout
+From `part_1` (uses the root `pytest.ini`, which points to `ocr-service/tests`):
 
-### AI Extraction
-- ✅ Intelligent field mapping
-- ✅ Handles fragmented OCR text (e.g., `0|2 0|2 1999`)
-- ✅ Date normalization and sanity checks
-- ✅ Bilingual support (Hebrew/English)
-- 
-### Validation
-- ✅ Israeli ID number validation (Luhn algorithm)
-- ✅ Date validation with range checks
-- ✅ Phone number validation
-- ✅ Completeness scoring
+```bash
+pytest
+```
 
-## 📋 Output Format
+This runs:
+- `ocr-service/tests/test_api.py` – HTTP-level tests
+- `ocr-service/tests/test_service.py` – direct service tests
+- `ocr-service/tests/test_performance.py` – basic performance checks
+
+### 2. End-to-end evaluation against ground truth
+
+The script `evaluate_ground_truth_accuracy.py` runs the full in-process pipeline (OCR → extraction → validation) for the labeled PDFs in `data/`, and compares predictions to the ground-truth labels embedded in the script.
+
+From `part_1`:
+
+```bash
+python evaluate_ground_truth_accuracy.py
+```
+
+You will see per-document accuracy, mismatches per field, validation completeness, and an overall accuracy summary.
+
+## How the pipeline works
+
+High-level flow when using the Streamlit UI:
+
+1. The user uploads a filled Form 283 PDF or image in `ui-service/app.py`.
+2. The UI calls the OCR microservice (`ocr-service/app.py`), which wraps `OCRService` in `ocr-service/service.py`.
+3. The OCR service calls Azure Document Intelligence (prebuilt-layout model with high-resolution OCR) and returns an `OCRResponse` (see `shared/models.py`).
+4. The UI forwards the `OCRResponse` JSON to the extraction microservice (`extraction-service/app.py`).
+5. `FieldExtractionService` in `extraction-service/extraction_service.py`:
+   - Loads the prompt template from `prompts/extraction_prompt.txt`.
+   - Calls Azure OpenAI GPT-4o with `response_format={"type": "json_object"}`.
+   - Normalizes and post-processes the JSON (ID, phone, and date fixes, health fund heuristics, etc.).
+   - Returns an `ExtractionResponse` with a fully-populated `ExtractedData` model.
+6. The UI then calls the validation microservice (`validation-service/app.py`) with that `ExtractionResponse`.
+7. `ValidationService` in `validation-service/validation_service.py`:
+   - Runs `robust_post_processor` to normalize phones, IDs, and dates.
+   - Validates Israeli ID numbers, phone numbers, and date ranges.
+   - Computes completeness (filled vs total leaf fields).
+   - Derives an accuracy score from completeness and the number of errors.
+8. The UI displays:
+   - A structured, bilingual (Hebrew/English) view of the extracted fields.
+   - Raw JSON output and OCR text.
+   - Validation errors, warnings, and completeness metrics.
+
+## Output format (core schema)
+
+The `ExtractedData` model in `shared/models.py` defines the canonical output. A typical JSON instance looks like:
 
 ```json
 {
@@ -111,91 +201,58 @@ Then upload a PDF and see the results!
   "address": {
     "street": "הרצל",
     "houseNumber": "25",
+    "apartment": "10",
     "city": "תל אביב",
-    "postalCode": "6688201"
+    "postalCode": "6688201",
+    "entrance": "",
+    "poBox": ""
   },
-  ...
+  "landlinePhone": "",
+  "mobilePhone": "0501234567",
+  "jobType": "מלצרות",
+  "dateOfInjury": {
+    "day": "10",
+    "month": "06",
+    "year": "2023"
+  },
+  "timeOfInjury": "14:30",
+  "accidentLocation": "במפעל",
+  "accidentAddress": "הורדים 8, תל אביב",
+  "accidentDescription": "נפילה מגובה",
+  "injuredBodyPart": "יד ימין",
+  "signature": "דוד כהן",
+  "formFillingDate": {
+    "day": "12",
+    "month": "06",
+    "year": "2023"
+  },
+  "formReceiptDateAtClinic": {
+    "day": "20",
+    "month": "06",
+    "year": "2023"
+  },
+  "medicalInstitutionFields": {
+    "healthFundMember": "כללית",
+    "natureOfAccident": "פגיעה בעבודה",
+    "medicalDiagnoses": "כוויות מדרגה שנייה"
+  }
 }
 ```
 
-## ⚙️ How It Works
+## Troubleshooting
 
-```
-PDF/Image
-    ↓
-[Azure Document Intelligence OCR]
-    ↓
-Raw Text (Hebrew/English)
-    ↓
-[GPT-4o + Smart Prompt]
-    ↓
-Structured JSON (29 fields)
-    ↓
-[Validation Service]
-    ↓
-Final Validated Data
-```
+- OCR fails with authentication/404 errors
+  - Check `AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT` and `AZURE_DOCUMENT_INTELLIGENCE_KEY`.
+  - Ensure there is no trailing slash in the endpoint.
+- Extraction returns empty or low-quality fields
+  - Verify your Azure OpenAI endpoint, key, and deployment name.
+  - Confirm that `prompts/extraction_prompt.txt` exists and is readable.
+  - Inspect OCR quality via the "OCR Text" tab in the UI or by running the evaluation script.
+- Validation shows many errors
+  - Make sure IDs and phones in the ground truth are correct.
+  - Remember that the validator is strict about phone length and leading zeros.
 
-## 🎯 Accuracy Metrics
+## Notes
 
-The system provides:
-- **Completeness**: % of fields filled
-- **Validation**: Checks for data correctness
-- **Field Count**: Filled fields / Total fields
-
-Typical results:
-- **OCR Accuracy**: 95%+ for clear documents
-- **Extraction Accuracy**: 90%+ for filled fields
-- **Processing Time**: 4-8 seconds per document
-
-## 🐛 Troubleshooting
-
-### OCR Fails (401/404 Error)
-- Check your Azure credentials in `.env`
-- Verify endpoint URL (no trailing slash)
-- Ensure API key is correct
-
-### Extraction Returns Empty Fields
-- Check GPT-4o deployment name
-- Verify prompt file exists in `prompts/` folder
-- Review OCR text quality with `test_ocr.py`
-
-### Validation Fails
-- Ensure `_validate_israeli_id` method is uncommented
-- Check that validation rules dictionary uses methods, not tuples
-
-## 📈 Performance Tips
-
-1. **Cache OCR results** to avoid re-processing same files
-2. **Use GPT-4o-mini** for faster/cheaper extraction (lower accuracy)
-3. **Batch process** multiple files for efficiency
-4. **Monitor token usage** to optimize costs
-
-## ✅ Validation Method
-
-The system validates:
-- **Israeli ID**: 9-digit format with check digit (Luhn algorithm)
-- **Dates**: Valid day (1-31), month (1-12), year (1900-2100)
-- **Phones**: Israeli format (05X-XXXXXXX or 0X-XXXXXXX)
-- **Completeness**: Percentage of filled fields
-
-## 🎓 Key Technologies
-
-- **Azure Document Intelligence**: OCR and layout analysis
-- **Azure OpenAI GPT-4o**: Intelligent field extraction
-- **Streamlit**: Web interface
-- **Python-dotenv**: Environment configuration
-
-## 📞 Support
-
-For issues:
-1. Check logs in terminal output
-2. Verify all environment variables are set
-3. Test each component separately (OCR → Extraction → Validation)
-4. Contact Dor Getter if Azure credentials are missing
-
----
-
-**Status**: ✅ **Part 1 Complete**
-
-**Next**: Part 2 - Chatbot Microservice
+- Python bytecode caches (`__pycache__`) and ad-hoc debug logs are intentionally not part of the core implementation.
+- The removed legacy single-file scripts (`config.py`, top-level `test_ocr.py` / `test_extraction.py`, etc.) have been replaced by the microservice layout described above.

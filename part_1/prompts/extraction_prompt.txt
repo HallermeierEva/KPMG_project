@@ -1,53 +1,53 @@
-You are an expert data extraction assistant specializing in Israeli National Insurance Institute (ביטוח לאומי) forms.
+EXTRACTION_PROMPT = """You are an expert at extracting data from Israeli work injury forms (טופס 283).
 
-# TASK
-Extract fields from the OCR text and return them in the specified JSON format.
+CRITICAL INSTRUCTIONS:
+1. Extract ALL fields from the OCR text below. Return ONLY valid JSON.
+2. PRESERVE ORIGINAL VALUES: Copy values EXACTLY as they appear (e.g., "זכר", "במפעל").
+3. ISRAELI ID PRECISION: IDs must be EXACTLY 9 digits. If the OCR shows 8 digits, check if there is a leading '0' or a fragmented digit at the end.
+4. CHECKBOX LOGIC (REFINED):
+   - Azure OCR often lists labels AFTER the checkbox.
+   - If you see ":selected: זכר", the gender is "זכר".
+   - If you see "במפעל :selected:", the accidentLocation is "במפעל".
+   - Only extract the value physically next to the ":selected:" tag.
+   - If a checkbox is marked ':selected:', the text IMMEDIATELY PRECEDING it is the value. Do not guess based on the field header.
+If multiple checkboxes exist for 'מקום התאונה' (accidentLocation), prioritize the one where the ':selected:' marker is closest to the label 'במפעל' or 'ת. דרכים'. Do not leave blank if one is clearly selected.
+5. MEDICAL SECTION: The Health Fund (קופת חולים) is often marked at the very bottom. If you see 'כללית' or 'מאוחדת' near a checkmark, extract it. Do NOT extract border characters like 'ח' as data.
+6. SIGNATURE: The signature is almost always the full name (FirstName + LastName) appearing at the bottom of the first page. Do not return "X".
+7. CLEANING: Remove all pipes (|) and spaces from IDs and Dates.
+8. MINIMALIST EXTRACTION: Do NOT add characters that are not digits to phone or ID fields. If you see single Hebrew letters like 'ח' or 'ס' near a field, IGNORE them; they are form borders, not data.
+9. DATA MINIMALISM: If a field appears empty or only contains a single stray Hebrew character (e.g., 'ח', 'ס'), return an empty string "". Do NOT extract border symbols.
 
-# STRICT EXTRACTION RULES
+### EXAMPLE OF CHECKBOX EXTRACTION ###
+OCR: "מין :unselected: נקבה :selected: זכר" -> gender: "זכר"
+OCR: "במפעל :selected: ת. דרכים בעבודה :unselected:" -> accidentLocation: "במפעל"
 
-1. DATE RECONSTRUCTION (CRITICAL):
-   - OCR often fragments dates (e.g., '0|202 199 9' or '2| 501 20 2 3').
-   - Rule: Remove all vertical bars ($|$), spaces, and noise. Reconstruct into a DDMMYYYY format.
-   - Example: '0|202 199 9' contains the sequence 0, 2, 0, 2, 1, 9, 9, 9. Result: Day: "02", Month: "02", Year: "1999".
-   - Check 'formReceiptDateAtClinic' (תאריך קבלת הטופס) and 'formFillingDate' (תאריך מילוי הטופס) specifically.
+OCR TEXT TO EXTRACT FROM:
+{ocr_text}
 
-2. HEBREW TEXT POSITIONING (JOB TYPE):
-   - Values like 'jobType' (סוג העבודה) often appear directly BEFORE or ABOVE the printed label in the OCR text.
-   - If you see a word like 'מלצרות' or 'ירקנייה' right before 'כאשר עבדתי ב' or 'סוג העבודה', extract that word as the jobType.
-
-3. ISRAELI PHONE CORRECTION:
-   - Mobile numbers MUST start with '05'. If OCR reads '65' or '85', correct it to '05'.
-   - Example: '6 5|544...' becomes '05544...'.
-
-4. NO HALLUCINATIONS:
-   - Only fill fields present in the text. Use "" for empty fields like 'natureOfAccident' if no text is present.
-
-# REQUIRED JSON STRUCTURE
-{
+REQUIRED OUTPUT SCHEMA:
+{{
   "lastName": "",
   "firstName": "",
   "idNumber": "",
   "gender": "",
-  "dateOfBirth": { "day": "", "month": "", "year": "" },
-  "address": { "street": "", "houseNumber": "", "entrance": "", "apartment": "", "city": "", "postalCode": "", "poBox": "" },
+  "dateOfBirth": {{ "day": "", "month": "", "year": "" }},
+  "address": {{ "street": "", "houseNumber": "", "entrance": "", "apartment": "", "city": "", "postalCode": "", "poBox": "" }},
   "landlinePhone": "",
   "mobilePhone": "",
   "jobType": "",
-  "dateOfInjury": { "day": "", "month": "", "year": "" },
+  "dateOfInjury": {{ "day": "", "month": "", "year": "" }},
   "timeOfInjury": "",
   "accidentLocation": "",
   "accidentAddress": "",
   "accidentDescription": "",
   "injuredBodyPart": "",
   "signature": "",
-  "formFillingDate": { "day": "", "month": "", "year": "" },
-  "formReceiptDateAtClinic": { "day": "", "month": "", "year": "" },
-  "medicalInstitutionFields": {
+  "formFillingDate": {{ "day": "", "month": "", "year": "" }},
+  "formReceiptDateAtClinic": {{ "day": "", "month": "", "year": "" }},
+  "medicalInstitutionFields": {{
     "healthFundMember": "",
     "natureOfAccident": "",
     "medicalDiagnoses": ""
-  }
-}
-
-# OCR TEXT:
-{ocr_text}
+  }}
+}}
+"""

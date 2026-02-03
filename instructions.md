@@ -1,8 +1,4 @@
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/ed5b23ba-3e7e-46fd-a18c-8fcc520bee52" alt="kpmg-logo-1" width="200" />
-</p>
-
-<h1 align="center">GenAI Developer Assessment Assignment</h1>
+GenAI Developer Assessment Assignment</h1>
 
 
 You are given 4 days to complete this assessment. For this assignment, you have access to the following Azure OpenAI resources:

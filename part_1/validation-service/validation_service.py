@@ -1,15 +1,95 @@
 """
-Validation Service for Extracted Fields
-Validates Israeli ID numbers, dates, and required fields
+Validation Service for Extracted Fields.
+
+Core business logic used by the validation microservice. This module is
+framework-agnostic and operates on plain dictionaries so it can also be
+used from tests and CLI tools.
 """
 
 import re
 from typing import Dict, Any, List, Tuple
 from datetime import datetime
-import logging
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+
+def robust_post_processor(data: Dict[str, Any]) -> Dict[str, Any]:
+    """Standardizes data regardless of which form it came from.
+
+    This function performs a series of normalization steps that make
+    down‑stream validation more robust:
+    - Normalize mobile phone shape ("0" vs "6" OCR / LLM issues)
+    - Normalize ID number length/format
+    - Fix common day/month swaps in dates
+    """
+    # 1. Phone Number Standardizer (The '0' vs '6' fix)
+    if data.get("mobilePhone"):
+        # Remove non-digits
+        phone = re.sub(r"\D", "", str(data["mobilePhone"]))
+        # If it's a standard length but starts with 65, it's almost certainly a 0
+        if len(phone) == 10 and phone.startswith("65"):
+            phone = "0" + phone[1:]
+        # Ensure it has a leading zero if it starts with 5
+        elif len(phone) == 9 and phone.startswith("5"):
+            phone = "0" + phone
+        data["mobilePhone"] = phone
+
+    # 2. ID Number Standardizer
+    if data.get("idNumber"):
+        ident = re.sub(r"\D", "", str(data["idNumber"]))
+        # Pad with leading zeros if someone has a short ID (common in Israel)
+        if 7 <= len(ident) <= 8:
+            ident = ident.zfill(9)
+        data["idNumber"] = ident
+
+    # 3. Normalize and fix Israeli dates (day/month swaps & padding)
+    data = fix_israeli_dates(data)
+
+    return data
+
+
+def fix_israeli_dates(data: Dict[str, Any]) -> Dict[str, Any]:
+    """Heuristic fixes for Israeli date fields (Bituah Leumi style).
+
+    Rules:
+    - If ``month`` is numeric and > 12, it's definitely not a real month → swap day/month.
+    - Day and month are padded to 2 digits ("3" → "03").
+    """
+    date_fields = [
+        "dateOfBirth",
+        "dateOfInjury",
+        "formFillingDate",
+        "formReceiptDateAtClinic",
+    ]
+
+    for field in date_fields:
+        d = data.get(field) or {}
+        if not isinstance(d, dict):
+            continue
+
+        day = str(d.get("day", ""))
+        month = str(d.get("month", ""))
+
+        # Logic: If month > 12, it's definitely the day → swap.
+        if month.isdigit() and int(month) > 12:
+            d["day"], d["month"] = month, day
+            day, month = d["day"], d["month"]
+
+        # Standardize to 2 digits (e.g., "3" -> "03")
+        if day and day.isdigit() and len(day) == 1:
+            d["day"] = "0" + day
+        if month and month.isdigit() and len(month) == 1:
+            d["month"] = "0" + month
+
+    return data
+
+
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from shared.logging_config import get_logger
+
+logger = get_logger("validation-service")
 
 
 class ValidationService:
@@ -30,11 +110,14 @@ class ValidationService:
             "landlinePhone": self._validate_phone,
         }
 
-        logger.info("Validation Service initialized")
+        logger.info("validation_service_initialized")
 
     def validate(self, extracted_data: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        Validate extracted data and return validation report
+        """Validate extracted data and return validation report.
+
+        The first step is to run ``robust_post_processor`` to normalize
+        common OCR / LLM quirks (phone formats, ID padding, date swaps)
+        so that the rest of the validation logic operates on clean data.
 
         Args:
             extracted_data: Dictionary containing extracted fields
@@ -42,6 +125,9 @@ class ValidationService:
         Returns:
             Dictionary with validation results
         """
+        # First, normalize the raw extracted data to fix common issues
+        extracted_data = robust_post_processor(dict(extracted_data))
+
         results = {
             "valid": True,
             "errors": [],
@@ -99,9 +185,13 @@ class ValidationService:
         except ValueError:
             pass  # Handle invalid dates elsewhere
 
-        return results
-
-
+        logger.info(
+            "validation_completed",
+            valid=results["valid"],
+            errors=len(results["errors"]),
+            warnings=len(results["warnings"]),
+            completeness_percentage=results["completeness"]["percentage"],
+        )
 
         return results
 
