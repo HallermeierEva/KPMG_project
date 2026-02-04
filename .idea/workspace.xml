@@ -5,29 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="acbedaac-3a21-49d4-ae1d-940f7ddc409b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/part_2/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/part_2/verify_setup.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/part_1/evaluate_ground_truth_accuracy.py" beforeDir="false" afterPath="$PROJECT_DIR$/part_1/evaluate_ground_truth_accuracy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/part_1/extraction-service/extraction_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/part_1/extraction-service/extraction_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/part_1/ocr-service/tests/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/part_1/ocr-service/tests/conftest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/part_1/shared/logging_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/part_1/shared/logging_config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/part_1/shared/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/part_1/shared/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/part_1/ui-service/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/part_1/ui-service/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/part_1/validation-service/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/part_1/validation-service/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/part_1/validation-service/validation_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/part_1/validation-service/validation_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/part_2/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/part_2/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/part_2/data/alternative_services.html" beforeDir="false" afterPath="$PROJECT_DIR$/part_2/phase2_data/alternative_services.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/part_2/data/communication_clinic_services.html" beforeDir="false" afterPath="$PROJECT_DIR$/part_2/phase2_data/communication_clinic_services.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/part_2/data/dentel_services.html" beforeDir="false" afterPath="$PROJECT_DIR$/part_2/phase2_data/dentel_services.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/part_2/data/optometry_services.html" beforeDir="false" afterPath="$PROJECT_DIR$/part_2/phase2_data/optometry_services.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/part_2/data/pragrency_services.html" beforeDir="false" afterPath="$PROJECT_DIR$/part_2/phase2_data/pragrency_services.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/part_2/data/workshops_services.html" beforeDir="false" afterPath="$PROJECT_DIR$/part_2/phase2_data/workshops_services.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/part_2/logs/chatbot.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/part_2/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/part_2/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/part_2/processor.py" beforeDir="false" afterPath="$PROJECT_DIR$/part_2/processor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/part_2/prompts.py" beforeDir="false" afterPath="$PROJECT_DIR$/part_2/prompts.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/part_2/test_bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/part_2/test_bot.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
