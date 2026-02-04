@@ -15,13 +15,13 @@ from shared.config import Config
 @pytest.fixture
 def sample_pdf_path():
     """Path to sample PDF file"""
-    # Use the test data from phase1_data
+    # Use the test phase2_data from phase1_data
     test_file = Path(__file__).parent / "test_data" / "283_ex1.pdf"
 
     # If not exists, try to find in project root
     if not test_file.exists():
         project_root = Path(__file__).parent.parent.parent.parent
-        test_file = project_root / "data" / "283_ex1.pdf"
+        test_file = project_root / "phase2_data" / "283_ex1.pdf"
 
     if not test_file.exists():
         pytest.skip("Test PDF file not found")

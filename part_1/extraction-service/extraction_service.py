@@ -371,7 +371,7 @@ Return only valid JSON in this format:
                     messages=[
                         {
                             "role": "system",
-                            "content": "You are an expert data extraction assistant. Return only valid JSON, no additional text.",
+                            "content": "You are an expert phase2_data extraction assistant. Return only valid JSON, no additional text.",
                         },
                         {
                             "role": "user",
@@ -403,7 +403,7 @@ Return only valid JSON in this format:
                 logger.info("field_extraction_completed")
                 return {
                     "success": True,
-                    "data": validated_data,
+                    "phase2_data": validated_data,
                     "raw_response": extracted_text,
                     "error": None,
                 }
@@ -418,7 +418,7 @@ Return only valid JSON in this format:
                     logger.error("field_extraction_failed_json")
                     return {
                         "success": False,
-                        "data": self._get_empty_schema(),
+                        "phase2_data": self._get_empty_schema(),
                         "raw_response": extracted_text if "extracted_text" in locals() else "",
                         "error": f"JSON parsing error: {str(e)}",
                     }
@@ -432,7 +432,7 @@ Return only valid JSON in this format:
                 if attempt == max_retries - 1:
                     return {
                         "success": False,
-                        "data": self._get_empty_schema(),
+                        "phase2_data": self._get_empty_schema(),
                         "raw_response": "",
                         "error": str(e),
                     }
@@ -440,14 +440,14 @@ Return only valid JSON in this format:
         # Should not reach here
         return {
             "success": False,
-            "data": self._get_empty_schema(),
+            "phase2_data": self._get_empty_schema(),
             "raw_response": "",
             "error": "Unknown error",
         }
 
     def _validate_and_fill_schema(self, extracted_data: Dict[str, Any]) -> Dict[str, Any]:
         """
-        Validate extracted data and ensure all required fields are present
+        Validate extracted phase2_data and ensure all required fields are present
         Fill missing fields with empty strings
 
         Args:
@@ -458,7 +458,7 @@ Return only valid JSON in this format:
         """
         schema = self._get_empty_schema()
 
-        # Recursively merge extracted data into schema
+        # Recursively merge extracted phase2_data into schema
         def merge_dict(target: dict, source: dict) -> dict:
             for key, value in source.items():
                 if key in target:
@@ -535,7 +535,7 @@ Return only valid JSON in this format:
         if not ocr_result.get("success"):
             return {
                 "success": False,
-                "data": self._get_empty_schema(),
+                "phase2_data": self._get_empty_schema(),
                 "raw_response": "",
                 "error": "OCR processing failed",
             }
@@ -545,7 +545,7 @@ Return only valid JSON in this format:
         if not ocr_text:
             return {
                 "success": False,
-                "data": self._get_empty_schema(),
+                "phase2_data": self._get_empty_schema(),
                 "raw_response": "",
                 "error": "No OCR text available",
             }
@@ -571,7 +571,7 @@ Return only valid JSON in this format:
         # Run the core extraction logic
         result = self.extract_fields(ocr_response.full_text)
 
-        data = ExtractedData(**result.get("data", {}))
+        data = ExtractedData(**result.get("phase2_data", {}))
         # Confidence may or may not be present depending on the prompt
         confidence = result.get("confidence", {})
 
@@ -656,7 +656,7 @@ if __name__ == "__main__":
         if result["success"]:
             print("   ✅ Extraction successful!")
             print("\n📊 Extracted Data:")
-            print(json.dumps(result["data"], indent=2, ensure_ascii=False))
+            print(json.dumps(result["phase2_data"], indent=2, ensure_ascii=False))
         else:
             print(f"   ❌ Extraction failed: {result['error']}")
 

@@ -95,7 +95,7 @@ with st.sidebar:
     This system uses:
     - **Azure Document Intelligence** for OCR
     - **GPT-4o** for intelligent field extraction
-    - **Advanced validation** for data quality
+    - **Advanced validation** for phase2_data quality
     """)
 
     st.header("📊 Capabilities")
@@ -203,7 +203,7 @@ if uploaded_file:
                 st.error(f"❌ Extraction Failed: {extraction_result.get('error')}")
                 st.stop()
 
-            extracted_data = extraction_result["data"]
+            extracted_data = extraction_result["phase2_data"]
 
             # 3. Run Validation microservice
             val_result = call_validation_service(extraction_result)

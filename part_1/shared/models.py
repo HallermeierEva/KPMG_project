@@ -1,5 +1,5 @@
 """
-Shared data models for all microservices
+Shared phase2_data models for all microservices
 """
 from pydantic import BaseModel, Field
 from typing import Optional, Dict, Any, List
@@ -32,7 +32,7 @@ class MedicalInstitutionFields(BaseModel):
 
 
 class ExtractedData(BaseModel):
-    """Main extracted data model"""
+    """Main extracted phase2_data model"""
     lastName: str = ""
     firstName: str = ""
     idNumber: str = ""

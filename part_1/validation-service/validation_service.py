@@ -12,7 +12,7 @@ from datetime import datetime
 
 
 def robust_post_processor(data: Dict[str, Any]) -> Dict[str, Any]:
-    """Standardizes data regardless of which form it came from.
+    """Standardizes phase2_data regardless of which form it came from.
 
     This function performs a series of normalization steps that make
     down‑stream validation more robust:
@@ -94,7 +94,7 @@ logger = get_logger("validation-service")
 
 class ValidationService:
     """
-    Service for validating extracted field data
+    Service for validating extracted field phase2_data
     Includes Israeli ID validation, date validation, and completeness checks
     """
 
@@ -113,11 +113,11 @@ class ValidationService:
         logger.info("validation_service_initialized")
 
     def validate(self, extracted_data: Dict[str, Any]) -> Dict[str, Any]:
-        """Validate extracted data and return validation report.
+        """Validate extracted phase2_data and return validation report.
 
         The first step is to run ``robust_post_processor`` to normalize
         common OCR / LLM quirks (phone formats, ID padding, date swaps)
-        so that the rest of the validation logic operates on clean data.
+        so that the rest of the validation logic operates on clean phase2_data.
 
         Args:
             extracted_data: Dictionary containing extracted fields
@@ -125,7 +125,7 @@ class ValidationService:
         Returns:
             Dictionary with validation results
         """
-        # First, normalize the raw extracted data to fix common issues
+        # First, normalize the raw extracted phase2_data to fix common issues
         extracted_data = robust_post_processor(dict(extracted_data))
 
         results = {
@@ -425,7 +425,7 @@ if __name__ == "__main__":
     print("🧪  TESTING VALIDATION SERVICE")
     print("=" * 70)
 
-    # Sample data
+    # Sample phase2_data
     test_data = {
         "lastName": "כהן",
         "firstName": "דוד",

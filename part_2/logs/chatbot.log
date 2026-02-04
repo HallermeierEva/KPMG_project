@@ -1,5 +1,254 @@
-2026-02-02 15:17:12,360 - INFO - Phase: collection | User: Unknown
-2026-02-02 15:17:15,688 - INFO - AI Response generated successfully
-2026-02-02 15:18:48,875 - INFO - Phase: collection | User: Unknown
-2026-02-02 15:18:51,982 - INFO - AI Response generated successfully
-2026-02-02 15:27:59,714 - ERROR - Error in chat endpoint: 'NoneType' object has no attribute 'get'
+2026-02-04 12:10:19,518 - INFO - Azure OpenAI client initialized successfully
+2026-02-04 12:10:19,529 - INFO - Embedding service initialized with deployment: text-embedding-ada-002
+2026-02-04 12:10:19,532 - INFO - Starting Medical Chatbot API server...
+2026-02-04 12:11:03,308 - INFO - Received request - Phase: collection, Message length: 45
+2026-02-04 12:11:05,546 - INFO - LLM response received - Length: 317
+2026-02-04 12:11:42,277 - INFO - Received request - Phase: collection, Message length: 59
+2026-02-04 12:11:46,471 - INFO - LLM response received - Length: 364
+2026-02-04 12:12:50,793 - INFO - Received request - Phase: collection, Message length: 3
+2026-02-04 12:12:53,106 - INFO - LLM response received - Length: 232
+2026-02-04 12:13:01,991 - INFO - Received request - Phase: collection, Message length: 9
+2026-02-04 12:13:03,983 - INFO - LLM response received - Length: 280
+2026-02-04 12:13:03,983 - INFO - Profile extraction successful for: אוה לוי
+2026-02-04 12:13:22,045 - INFO - Received request - Phase: qa, Message length: 8
+2026-02-04 12:13:22,046 - INFO - Ingesting 6 files from phase2_data
+2026-02-04 12:13:22,096 - INFO - Successfully ingested 6 documents
+2026-02-04 12:13:22,096 - INFO - Loaded 6 documents from phase2_data
+2026-02-04 12:13:26,206 - INFO - LLM response received - Length: 62
+2026-02-04 12:19:21,943 - INFO - Azure OpenAI client initialized successfully
+2026-02-04 12:19:21,955 - INFO - Embedding service initialized with deployment: text-embedding-ada-002
+2026-02-04 12:19:21,957 - INFO - Starting Medical Chatbot API server...
+2026-02-04 12:19:42,824 - INFO - Received request - Phase: collection, Message: היי מה הכיסוי שלי לסדנאות?
+2026-02-04 12:19:44,408 - INFO - LLM response received - Length: 232
+2026-02-04 12:25:08,035 - INFO - Azure OpenAI client initialized successfully
+2026-02-04 12:25:08,047 - INFO - Embedding service initialized with deployment: text-embedding-ada-002
+2026-02-04 12:25:08,050 - INFO - Starting Medical Chatbot API server...
+2026-02-04 12:25:22,294 - INFO - Received request - Phase: collection, Message: היי
+2026-02-04 12:25:22,294 - INFO - Detected language: he
+2026-02-04 12:25:23,755 - INFO - LLM response received - Length: 97
+2026-02-04 12:26:01,623 - INFO - Received request - Phase: collection, Message: אני רוצה לדעת כיסוי על סדנאות
+2026-02-04 12:26:01,623 - INFO - Detected language: he
+2026-02-04 12:26:03,787 - INFO - LLM response received - Length: 267
+2026-02-04 12:26:59,253 - INFO - Received request - Phase: collection, Message: אני שילת מזור בת 45, חברה מכבי זהב ותז 473839888 וכרטיס 37462928
+2026-02-04 12:26:59,253 - INFO - Detected language: he
+2026-02-04 12:27:00,722 - INFO - LLM response received - Length: 131
+2026-02-04 12:27:06,176 - INFO - Received request - Phase: collection, Message: נקבה
+2026-02-04 12:27:06,176 - INFO - Detected language: he
+2026-02-04 12:27:07,622 - INFO - LLM response received - Length: 194
+2026-02-04 12:27:21,049 - INFO - Received request - Phase: qa, Message: אז מה הכיסו
+2026-02-04 12:27:21,049 - INFO - Detected language: he
+2026-02-04 12:27:21,049 - INFO - Ingesting 6 files from phase2_data
+2026-02-04 12:27:21,097 - INFO - Successfully ingested 6 documents
+2026-02-04 12:27:21,097 - INFO - Loaded 6 documents from phase2_data
+2026-02-04 12:27:27,244 - INFO - LLM response received - Length: 480
+2026-02-04 12:27:46,139 - INFO - Received request - Phase: qa, Message: כל זה חינם?
+2026-02-04 12:27:46,139 - INFO - Detected language: he
+2026-02-04 12:27:47,801 - INFO - LLM response received - Length: 129
+2026-02-04 12:30:13,640 - INFO - Azure OpenAI client initialized successfully
+2026-02-04 12:30:13,651 - INFO - Embedding service initialized with deployment: text-embedding-ada-002
+2026-02-04 12:30:13,653 - INFO - Starting Medical Chatbot API server...
+2026-02-04 12:30:31,294 - INFO - Received request - Phase: collection, Message: היי אני רוצה להפסיק לעשן
+2026-02-04 12:30:31,295 - INFO - Detected language: he
+2026-02-04 12:30:32,798 - INFO - LLM response received - Length: 68
+2026-02-04 12:30:57,198 - INFO - Received request - Phase: collection, Message: שימון כהן
+2026-02-04 12:30:57,198 - INFO - Detected language: he
+2026-02-04 12:30:58,728 - INFO - LLM response received - Length: 41
+2026-02-04 12:31:05,137 - INFO - Received request - Phase: collection, Message: 337927463
+2026-02-04 12:31:05,137 - INFO - Detected language: en
+2026-02-04 12:31:06,483 - INFO - LLM response received - Length: 60
+2026-02-04 12:37:04,016 - INFO - Azure OpenAI client initialized successfully
+2026-02-04 12:37:04,028 - INFO - Embedding service initialized with deployment: text-embedding-ada-002
+2026-02-04 12:37:04,030 - INFO - Starting Medical Chatbot API server...
+2026-02-04 12:37:50,227 - INFO - Received request - Phase: collection, Message: שלום, אני רוצה להכיר את הסכויות שלי לגבי ראיון
+2026-02-04 12:37:50,227 - INFO - Using language: he (preferred: True)
+2026-02-04 12:37:51,722 - INFO - LLM response received - Length: 171
+2026-02-04 12:38:38,875 - INFO - Received request - Phase: collection, Message: נעמי שמר בת 34 תז 3384393 נקבה כרטיס 384738939 מיוחדת זהב
+2026-02-04 12:38:38,875 - INFO - Using language: he (preferred: True)
+2026-02-04 12:38:40,124 - INFO - LLM response received - Length: 74
+2026-02-04 12:38:49,505 - INFO - Received request - Phase: collection, Message: 678564566
+2026-02-04 12:38:49,505 - INFO - Using language: he (preferred: True)
+2026-02-04 12:38:50,978 - INFO - LLM response received - Length: 151
+2026-02-04 12:44:07,042 - INFO - Azure OpenAI client initialized successfully
+2026-02-04 12:44:07,053 - INFO - Embedding service initialized with deployment: text-embedding-ada-002
+2026-02-04 12:44:07,055 - INFO - Starting Medical Chatbot API server...
+2026-02-04 12:44:30,288 - INFO - Received request - Phase: collection, Message: היי, מה הזכויות שלי עם הקופת חולים כשאני בהריאון
+2026-02-04 12:44:30,288 - INFO - Using language: he
+2026-02-04 12:44:31,772 - INFO - LLM response received - Length: 75
+2026-02-04 12:44:50,561 - INFO - Received request - Phase: collection, Message: רוזה מלאכי
+2026-02-04 12:44:50,561 - INFO - Using language: he
+2026-02-04 12:44:51,743 - INFO - LLM response received - Length: 52
+2026-02-04 12:44:57,236 - INFO - Received request - Phase: collection, Message: 56473839
+2026-02-04 12:44:57,236 - INFO - Using language: he
+2026-02-04 12:44:58,598 - INFO - LLM response received - Length: 76
+2026-02-04 12:45:04,732 - INFO - Received request - Phase: collection, Message: 768756456
+2026-02-04 12:45:04,733 - INFO - Using language: he
+2026-02-04 12:45:05,949 - INFO - LLM response received - Length: 31
+2026-02-04 12:45:12,759 - INFO - Received request - Phase: collection, Message: נקבה
+2026-02-04 12:45:12,759 - INFO - Using language: he
+2026-02-04 12:45:13,894 - INFO - LLM response received - Length: 71
+2026-02-04 12:45:20,796 - INFO - Received request - Phase: collection, Message: 34
+2026-02-04 12:45:20,796 - INFO - Using language: he
+2026-02-04 12:45:21,931 - INFO - LLM response received - Length: 40
+2026-02-04 12:45:32,972 - INFO - Received request - Phase: collection, Message: מכבי זהב
+2026-02-04 12:45:32,972 - INFO - Using language: he
+2026-02-04 12:45:34,335 - INFO - LLM response received - Length: 40
+2026-02-04 12:45:39,948 - INFO - Received request - Phase: collection, Message: 567456354
+2026-02-04 12:45:39,948 - INFO - Using language: he
+2026-02-04 12:45:41,401 - INFO - LLM response received - Length: 151
+2026-02-04 12:45:57,161 - INFO - Received request - Phase: qa, Message: אשמח לתשובה
+2026-02-04 12:45:57,161 - INFO - Using language: he
+2026-02-04 12:45:57,161 - INFO - Ingesting 6 files from phase2_data
+2026-02-04 12:45:57,211 - INFO - Successfully ingested 6 documents
+2026-02-04 12:45:57,211 - INFO - Loaded 6 documents from phase2_data
+2026-02-04 12:46:04,441 - INFO - LLM response received - Length: 527
+2026-02-04 12:49:52,172 - INFO - Azure OpenAI client initialized successfully
+2026-02-04 12:49:52,183 - INFO - Embedding service initialized with deployment: text-embedding-ada-002
+2026-02-04 12:49:52,185 - INFO - Starting Medical Chatbot API server...
+2026-02-04 12:50:17,431 - ERROR - Error: name 'language_instruction' is not defined
+2026-02-04 12:51:13,728 - INFO - Azure OpenAI client initialized successfully
+2026-02-04 12:51:13,739 - INFO - Embedding service initialized with deployment: text-embedding-ada-002
+2026-02-04 12:51:13,742 - INFO - Starting Medical Chatbot API server...
+2026-02-04 12:51:35,043 - INFO - Phase: collection | Msg: היי, מה הזכויות שלי בהריון
+2026-02-04 12:51:36,512 - INFO - LLM response received - Length: 73
+2026-02-04 12:51:49,373 - INFO - Phase: collection | Msg: אוה הלרמאיר
+2026-02-04 12:51:50,741 - INFO - LLM response received - Length: 45
+2026-02-04 12:51:56,567 - INFO - Phase: collection | Msg: 337914121
+2026-02-04 12:51:57,704 - INFO - LLM response received - Length: 20
+2026-02-04 12:52:01,346 - INFO - Phase: collection | Msg: נקבה
+2026-02-04 12:52:01,863 - INFO - LLM response received - Length: 18
+2026-02-04 12:52:04,529 - INFO - Phase: collection | Msg: 34
+2026-02-04 12:52:05,282 - INFO - LLM response received - Length: 28
+2026-02-04 12:52:09,723 - INFO - Phase: collection | Msg: מכבי זהב
+2026-02-04 12:52:10,709 - INFO - LLM response received - Length: 51
+2026-02-04 12:52:16,525 - INFO - Phase: collection | Msg: 3423324345
+2026-02-04 12:52:17,675 - INFO - LLM response received - Length: 62
+2026-02-04 12:52:23,158 - INFO - Phase: collection | Msg: 543425434
+2026-02-04 12:52:24,330 - INFO - LLM response received - Length: 25
+2026-02-04 12:52:30,133 - INFO - Phase: collection | Msg: זהב
+2026-02-04 12:52:32,074 - INFO - LLM response received - Length: 242
+2026-02-04 12:52:43,597 - INFO - Phase: collection | Msg: אני מאשרת
+2026-02-04 12:52:44,912 - INFO - LLM response received - Length: 139
+2026-02-04 12:56:18,826 - INFO - Azure OpenAI client initialized successfully
+2026-02-04 12:56:18,837 - INFO - Embedding service initialized with deployment: text-embedding-ada-002
+2026-02-04 12:56:18,840 - INFO - Starting Medical Chatbot API server...
+2026-02-04 12:56:38,902 - INFO - LLM response received - Length: 337
+2026-02-04 12:57:22,005 - INFO - LLM response received - Length: 314
+2026-02-04 12:57:35,175 - INFO - LLM response received - Length: 241
+2026-02-04 12:57:46,071 - INFO - LLM response received - Length: 147
+2026-02-04 12:59:08,047 - INFO - Azure OpenAI client initialized successfully
+2026-02-04 12:59:08,058 - INFO - Embedding service initialized with deployment: text-embedding-ada-002
+2026-02-04 12:59:08,061 - INFO - Starting Medical Chatbot API server...
+2026-02-04 12:59:26,911 - INFO - LLM response received - Length: 109
+2026-02-04 12:59:51,519 - INFO - LLM response received - Length: 76
+2026-02-04 12:59:57,659 - INFO - LLM response received - Length: 48
+2026-02-04 13:00:01,446 - INFO - LLM response received - Length: 45
+2026-02-04 13:00:04,531 - INFO - LLM response received - Length: 45
+2026-02-04 13:00:08,724 - INFO - LLM response received - Length: 97
+2026-02-04 13:00:24,184 - INFO - LLM response received - Length: 56
+2026-02-04 13:00:29,911 - INFO - LLM response received - Length: 287
+2026-02-04 13:00:35,138 - INFO - LLM response received - Length: 156
+2026-02-04 13:04:39,310 - INFO - Azure OpenAI client initialized successfully
+2026-02-04 13:04:39,321 - INFO - Embedding service initialized with deployment: text-embedding-ada-002
+2026-02-04 13:04:39,323 - INFO - Starting Medical Chatbot API server...
+2026-02-04 13:05:31,071 - INFO - LLM response received - Length: 259
+2026-02-04 13:05:45,199 - INFO - LLM response received - Length: 205
+2026-02-04 13:05:59,533 - ERROR - Azure OpenAI API error: Error code: 400 - {'error': {'message': "The response was filtered due to the prompt triggering Azure OpenAI's content management policy. Please modify your prompt and retry. To learn more about our content filtering policies please read our documentation: https://go.microsoft.com/fwlink/?linkid=2198766", 'type': None, 'param': 'prompt', 'code': 'content_filter', 'status': 400, 'innererror': {'code': 'ResponsibleAIPolicyViolation', 'content_filter_result': {'hate': {'filtered': False, 'severity': 'safe'}, 'self_harm': {'filtered': False, 'severity': 'safe'}, 'sexual': {'filtered': True, 'severity': 'medium'}, 'violence': {'filtered': False, 'severity': 'safe'}}}}}
+2026-02-04 13:05:59,534 - ERROR - Chat failed: Error code: 400 - {'error': {'message': "The response was filtered due to the prompt triggering Azure OpenAI's content management policy. Please modify your prompt and retry. To learn more about our content filtering policies please read our documentation: https://go.microsoft.com/fwlink/?linkid=2198766", 'type': None, 'param': 'prompt', 'code': 'content_filter', 'status': 400, 'innererror': {'code': 'ResponsibleAIPolicyViolation', 'content_filter_result': {'hate': {'filtered': False, 'severity': 'safe'}, 'self_harm': {'filtered': False, 'severity': 'safe'}, 'sexual': {'filtered': True, 'severity': 'medium'}, 'violence': {'filtered': False, 'severity': 'safe'}}}}}
+2026-02-04 13:07:05,364 - INFO - Azure OpenAI client initialized successfully
+2026-02-04 13:07:05,375 - INFO - Embedding service initialized with deployment: text-embedding-ada-002
+2026-02-04 13:07:05,377 - INFO - Starting Medical Chatbot API server...
+2026-02-04 13:07:17,966 - INFO - LLM response received - Length: 199
+2026-02-04 13:07:30,630 - INFO - LLM response received - Length: 93
+2026-02-04 13:07:36,726 - INFO - LLM response received - Length: 71
+2026-02-04 13:07:40,895 - INFO - LLM response received - Length: 52
+2026-02-04 13:07:44,696 - INFO - LLM response received - Length: 158
+2026-02-04 13:07:49,821 - INFO - LLM response received - Length: 158
+2026-02-04 13:07:57,501 - INFO - LLM response received - Length: 272
+2026-02-04 13:08:03,896 - INFO - LLM response received - Length: 154
+2026-02-04 13:08:03,896 - INFO - Detected [COMPLETE] tag. Attempting turn chaining...
+2026-02-04 13:08:03,896 - INFO - Extracted Profile: {'Full Name': 'Eva Hall', 'ID': '342332223', 'Gender': 'Female', 'Age': 43, 'HMO': 'מכבי', 'Card Number': '342321234', 'Insurance Tier': 'זהב'}
+2026-02-04 13:08:03,897 - INFO - Ingesting 6 files from phase2_data
+2026-02-04 13:08:03,945 - INFO - Successfully ingested 6 documents
+2026-02-04 13:08:03,945 - INFO - Loaded 6 documents from phase2_data
+2026-02-04 13:08:05,921 - INFO - Chaining to answer original question: i need a dentist
+2026-02-04 13:08:08,634 - INFO - LLM response received - Length: 650
+2026-02-04 13:09:52,596 - INFO - Azure OpenAI client initialized successfully
+2026-02-04 13:09:52,608 - INFO - Embedding service initialized with deployment: text-embedding-ada-002
+2026-02-04 13:09:52,610 - INFO - Starting Medical Chatbot API server...
+2026-02-04 13:10:18,209 - INFO - LLM response received - Length: 75
+2026-02-04 13:10:29,025 - INFO - LLM response received - Length: 46
+2026-02-04 13:10:33,976 - INFO - LLM response received - Length: 20
+2026-02-04 13:10:39,148 - INFO - LLM response received - Length: 24
+2026-02-04 13:10:43,725 - INFO - LLM response received - Length: 58
+2026-02-04 13:10:52,239 - INFO - LLM response received - Length: 45
+2026-02-04 13:10:57,932 - INFO - LLM response received - Length: 79
+2026-02-04 13:11:02,500 - INFO - LLM response received - Length: 44
+2026-02-04 13:11:17,411 - INFO - LLM response received - Length: 219
+2026-02-04 13:11:23,838 - INFO - LLM response received - Length: 157
+2026-02-04 13:11:23,838 - INFO - Detected [COMPLETE] tag. Attempting turn chaining...
+2026-02-04 13:11:23,839 - INFO - Extracted Profile: {'Full Name': 'אוה דיין', 'ID': '342343534', 'Gender': 'נקרבה', 'Age': '53', 'HMO': 'מיוחדת', 'Card Number': '858594849', 'Insurance Tier': 'זהב'}
+2026-02-04 13:11:23,841 - INFO - Ingesting 6 files from phase2_data
+2026-02-04 13:11:23,891 - INFO - Successfully ingested 6 documents
+2026-02-04 13:11:23,892 - INFO - Loaded 6 documents from phase2_data
+2026-02-04 13:11:25,737 - INFO - Chaining to answer original question: היי, אני צריכה להחליף משקפיים איזה הנחה יש לי?
+2026-02-04 13:11:27,490 - INFO - LLM response received - Length: 115
+2026-02-04 13:25:25,619 - INFO - Azure OpenAI client initialized successfully
+2026-02-04 13:25:25,631 - INFO - Embedding service initialized with deployment: text-embedding-ada-002
+2026-02-04 13:25:25,633 - INFO - Starting Medical Chatbot API server...
+2026-02-04 13:25:36,084 - INFO - LLM response received - Length: 158
+2026-02-04 13:25:37,286 - INFO - LLM response received - Length: 257
+2026-02-04 13:25:38,109 - INFO - LLM response received - Length: 149
+2026-02-04 13:25:38,109 - INFO - Detected [COMPLETE] tag. Attempting turn chaining...
+2026-02-04 13:25:38,110 - INFO - Extracted Profile: {'Full Name': 'Noa', 'ID': '123456789', 'Gender': 'Female', 'Age': 28, 'HMO': 'מכבי', 'Card Number': '111222333', 'Insurance Tier': 'זהב'}
+2026-02-04 13:25:38,110 - INFO - Ingesting 6 files from phase2_data
+2026-02-04 13:25:38,152 - INFO - Successfully ingested 6 documents
+2026-02-04 13:25:38,152 - INFO - Loaded 6 documents from phase2_data
+2026-02-04 13:25:40,091 - INFO - Chaining to answer original question: How much for a root canal in Maccabi Gold?
+2026-02-04 13:25:41,699 - INFO - LLM response received - Length: 85
+2026-02-04 13:25:44,360 - INFO - LLM response received - Length: 253
+2026-02-04 13:25:45,793 - INFO - LLM response received - Length: 209
+2026-02-04 13:25:46,791 - INFO - LLM response received - Length: 154
+2026-02-04 13:25:46,791 - INFO - Detected [COMPLETE] tag. Attempting turn chaining...
+2026-02-04 13:25:46,791 - INFO - Extracted Profile: {'Full Name': 'שילת מזור', 'ID': '473839888', 'Gender': 'נקבה', 'Age': '45', 'HMO': 'מכבי', 'Card Number': '37462928', 'Insurance Tier': 'זהב'}
+2026-02-04 13:25:46,791 - INFO - Chaining to answer original question: אני רוצה לדעת כיסוי על סדנאות
+2026-02-04 13:25:50,072 - INFO - LLM response received - Length: 505
+2026-02-04 13:26:54,480 - INFO - Azure OpenAI client initialized successfully
+2026-02-04 13:26:54,491 - INFO - Embedding service initialized with deployment: text-embedding-ada-002
+2026-02-04 13:26:54,494 - INFO - Starting Medical Chatbot API server...
+2026-02-04 13:26:56,150 - INFO - Ingesting 6 files from phase2_data
+2026-02-04 13:26:56,195 - INFO - Successfully ingested 6 documents
+2026-02-04 13:26:56,196 - INFO - Loaded 6 documents from phase2_data
+2026-02-04 13:27:52,998 - INFO - Azure OpenAI client initialized successfully
+2026-02-04 13:27:53,009 - INFO - Embedding service initialized with deployment: text-embedding-ada-002
+2026-02-04 13:27:53,011 - INFO - Starting Medical Chatbot API server...
+2026-02-04 13:27:55,069 - INFO - LLM response received - Length: 237
+2026-02-04 13:27:56,562 - INFO - LLM response received - Length: 253
+2026-02-04 13:27:57,276 - INFO - LLM response received - Length: 149
+2026-02-04 13:27:57,276 - INFO - Detected [COMPLETE] tag. Attempting turn chaining...
+2026-02-04 13:27:57,276 - INFO - Extracted Profile: {'Full Name': 'Eva', 'ID': '123456789', 'Gender': 'Female', 'Age': 45, 'HMO': 'מכבי', 'Card Number': '111222333', 'Insurance Tier': 'זהב'}
+2026-02-04 13:27:57,276 - INFO - Chaining to answer original question: What is my coverage for root canals?
+2026-02-04 13:27:58,540 - INFO - LLM response received - Length: 85
+2026-02-04 13:28:00,453 - INFO - LLM response received - Length: 107
+2026-02-04 13:28:02,612 - INFO - LLM response received - Length: 232
+2026-02-04 13:28:03,456 - INFO - LLM response received - Length: 154
+2026-02-04 13:28:03,456 - INFO - Detected [COMPLETE] tag. Attempting turn chaining...
+2026-02-04 13:28:03,456 - INFO - Extracted Profile: {'Full Name': 'שילת מזור', 'ID': '473839888', 'Gender': 'נקבה', 'Age': '45', 'HMO': 'מכבי', 'Card Number': '37462928', 'Insurance Tier': 'זהב'}
+2026-02-04 13:28:03,457 - INFO - Chaining to answer original question: אני רוצה לדעת כיסוי על סדנאות
+2026-02-04 13:28:06,282 - INFO - LLM response received - Length: 535
+2026-02-04 13:28:49,157 - INFO - Azure OpenAI client initialized successfully
+2026-02-04 13:28:49,166 - INFO - Embedding service initialized with deployment: text-embedding-ada-002
+2026-02-04 13:28:49,168 - INFO - Starting Medical Chatbot API server...
+2026-02-04 13:28:52,368 - INFO - LLM response received - Length: 194
+2026-02-04 13:28:53,494 - INFO - LLM response received - Length: 247
+2026-02-04 13:28:54,243 - INFO - LLM response received - Length: 149
+2026-02-04 13:28:54,243 - INFO - Detected [COMPLETE] tag. Attempting turn chaining...
+2026-02-04 13:28:54,243 - INFO - Extracted Profile: {'Full Name': 'Eva', 'ID': '123456789', 'Gender': 'Female', 'Age': 45, 'HMO': 'מכבי', 'Card Number': '111222333', 'Insurance Tier': 'זהב'}
+2026-02-04 13:28:54,243 - INFO - Chaining to answer original question: What is my coverage for root canals?
+2026-02-04 13:28:55,337 - INFO - LLM response received - Length: 85
+2026-02-04 13:28:57,387 - INFO - LLM response received - Length: 116
+2026-02-04 13:28:58,999 - INFO - LLM response received - Length: 218
+2026-02-04 13:28:59,866 - INFO - LLM response received - Length: 154
+2026-02-04 13:28:59,866 - INFO - Detected [COMPLETE] tag. Attempting turn chaining...
+2026-02-04 13:28:59,866 - INFO - Extracted Profile: {'Full Name': 'שילת מזור', 'ID': '473839888', 'Gender': 'נקבה', 'Age': '45', 'HMO': 'מכבי', 'Card Number': '37462928', 'Insurance Tier': 'זהב'}
+2026-02-04 13:28:59,866 - INFO - Chaining to answer original question: אני רוצה לדעת כיסוי על סדנאות
+2026-02-04 13:29:02,778 - INFO - LLM response received - Length: 511

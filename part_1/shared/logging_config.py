@@ -48,17 +48,17 @@ class StructuredLogger:
             return json.dumps(log_data, ensure_ascii=False)
 
     def info(self, message: str, **kwargs):
-        """Log info with structured data"""
+        """Log info with structured phase2_data"""
         extra = {'extra_data': kwargs}
         self.logger.info(message, extra=extra)
 
     def error(self, message: str, **kwargs):
-        """Log error with structured data"""
+        """Log error with structured phase2_data"""
         extra = {'extra_data': kwargs}
         self.logger.error(message, extra=extra)
 
     def warning(self, message: str, **kwargs):
-        """Log warning with structured data"""
+        """Log warning with structured phase2_data"""
         extra = {'extra_data': kwargs}
         self.logger.warning(message, extra=extra)
 

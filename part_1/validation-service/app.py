@@ -1,6 +1,6 @@
 """FastAPI application for the Validation microservice.
 
-This service accepts extracted data (ExtractionResponse) and returns a
+This service accepts extracted phase2_data (ExtractionResponse) and returns a
 ValidationResponse with errors, warnings, completeness and an
 approximate accuracy score.
 """
@@ -47,7 +47,7 @@ async def health_check():
 
 @app.post("/api/v1/validate", response_model=ValidationResponse)
 async def validate_extraction(extraction: ExtractionResponse):
-    """Validate extracted data coming from the extraction service."""
+    """Validate extracted phase2_data coming from the extraction service."""
     start_time = time.time()
 
     logger.info(

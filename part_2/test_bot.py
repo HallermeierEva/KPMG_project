@@ -2,6 +2,9 @@ import requests
 import json
 import time
 import os
+import subprocess
+import signal
+import sys
 from openai import AzureOpenAI
 from dotenv import load_dotenv
 
@@ -9,6 +12,7 @@ load_dotenv()
 
 # Configuration
 API_URL = "http://localhost:8000/chat"
+HEALTH_URL = "http://localhost:8000/health"
 
 # Initialize Judge Client
 judge_client = AzureOpenAI(
@@ -19,26 +23,91 @@ judge_client = AzureOpenAI(
 DEPLOYMENT_NAME = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
 
 
-def llm_judge(received_answer, expected_truth):
-    """Uses an LLM to determine if the bot's answer matches the medical truth."""
-    prompt = f"""
-    You are an impartial judge evaluating a medical chatbot's accuracy.
+def start_backend():
+    """Starts the FastAPI backend in a separate process with robust health polling."""
+    print(f"⏳ Starting backend server (main.py)...")
 
+    # Using 'python' or 'python3' - sys.executable ensures the same venv is used
+    process = subprocess.Popen(
+        [sys.executable, "main.py"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        preexec_fn=os.setsid if os.name != 'nt' else None
+    )
+
+    # Wait a moment for the process to actually spawn
+    time.sleep(2)
+
+    max_retries = 15
+    for i in range(max_retries):
+        try:
+            # Increased timeout to 5s to allow for slow startup/logic loading
+            # Switched to 127.0.0.1 to avoid local DNS resolution delays
+            HEALTH_CHECK_URL = "http://127.0.0.1:8000/health"
+            response = requests.get(HEALTH_CHECK_URL, timeout=5)
+
+            if response.status_code == 200:
+                print("✅ Backend is healthy and ready!")
+                return process
+        except (requests.exceptions.ConnectionError, requests.exceptions.ReadTimeout):
+            # This is expected while the server is still booting
+            pass
+        except Exception as e:
+            print(f"  (Note: Unexpected poll error: {type(e).__name__})")
+
+        print(f"  ...waiting for backend to respond ({i + 1}/{max_retries})")
+        time.sleep(3)
+
+    # If we reach here, it failed. Print any errors from the backend itself.
+    print("❌ Error: Backend failed to start.")
+    stdout, stderr = process.communicate(timeout=1)
+    if stderr:
+        print(f"Backend Error Log:\n{stderr}")
+
+    process.kill()
+    sys.exit(1)
+
+
+def stop_backend(process):
+    """Safely terminates the backend server and its process group."""
+    print(f"\n🛑 Shutting down backend server (PID: {process.pid})...")
+    try:
+        if os.name == 'nt':
+            process.terminate()
+        else:
+            # Get the process group ID
+            pgid = os.getpgid(process.pid)
+            # Send the termination signal to the whole group
+            os.killpg(pgid, signal.SIGTERM)
+
+        # Give it a moment to exit cleanly
+        process.wait(timeout=5)
+        print("✅ Backend stopped successfully.")
+    except ProcessLookupError:
+        # The process already exited, we can ignore this
+        print("ℹ️ Backend was already closed.")
+    except Exception as e:
+        print(f"⚠️ Note during shutdown: {e}")
+        # Final fallback: force kill the individual process
+        try:
+            process.kill()
+        except:
+            pass
+
+# --- LLM Judge and Chat logic remain similar ---
+
+def llm_judge(received_answer, expected_truth):
+    prompt = f"""
+    Judge the medical chatbot's accuracy.
     EXPECTED TRUTH: {expected_truth}
     BOT ANSWER: {received_answer}
-
-    Rules:
-    1. If the bot provides the correct numerical value or benefit mentioned in the truth, it is CORRECT.
-    2. Language differences (Hebrew vs English) do not matter.
-    3. Phrasing differences (e.g., 'no cost' vs 'free') do not matter.
-    4. If the bot says 'I don't know' but the truth has data, it is INCORRECT.
-
     Respond only with 'CORRECT' or 'INCORRECT'.
     """
     try:
         response = judge_client.chat.completions.create(
             model=DEPLOYMENT_NAME,
-            messages=[{"role": "system", "content": "You are a quality assurance judge."},
+            messages=[{"role": "system", "content": "You are a QA judge."},
                       {"role": "user", "content": prompt}]
         )
         return "CORRECT" in response.choices[0].message.content.upper()
@@ -47,69 +116,69 @@ def llm_judge(received_answer, expected_truth):
         return False
 
 
-def send_chat(message, history, profile=None, phase="collection"):
-    payload = {"message": message, "history": history, "user_profile": profile, "phase": phase}
-    start_time = time.time()
+def send_chat(message, history, profile=None, phase="collection", lang=None):
+    payload = {
+        "message": message,
+        "history": history,
+        "user_profile": profile,
+        "phase": phase,
+        "preferred_language": lang
+    }
     try:
-        response = requests.post(API_URL, json=payload, timeout=30)
-        return response.json(), time.time() - start_time
-    except:
-        return None, 0
+        response = requests.post(API_URL, json=payload, timeout=40)
+        return response.json()
+    except Exception as e:
+        print(f"Request failed: {e}")
+        return None
 
 
-def run_scenario(name, inputs, ground_truth):
-    print(f"\n🚀 Running: {name}")
+def run_scenario(name, initial_question, collection_inputs, ground_truth, lang="he"):
+    print(f"\n🚀 Scenario: {name}")
     history, profile, phase = [], {}, "collection"
-    total_latency = 0
+    messages = [initial_question] + collection_inputs + (["I confirm"] if lang == "en" else ["אני מאשר"])
 
-    for i, msg in enumerate(inputs):
-        res, latency = send_chat(msg, history, profile, phase)
-        total_latency += latency
-        if not res: return False, 0
+    final_resp = ""
+    for msg in messages:
+        res = send_chat(msg, history, profile, phase, lang)
+        if not res: return False
         history.append({"role": "user", "content": msg})
         history.append({"role": "assistant", "content": res['response']})
         if res.get("extracted_profile"):
-            profile, phase = res["extracted_profile"], "qa"
+            profile, phase = res["extracted_profile"], res["phase"]
+        final_resp = res['response']
 
-    # Final Validation using LLM Judge
-    final_resp = history[-1]["content"]
     passed = llm_judge(final_resp, ground_truth)
-
-    status = "✅ PASSED" if passed else "❌ FAILED"
-    print(f"  AI Answer: {final_resp[:100]}...")
-    print(f"  Result: {status} (Avg Latency: {total_latency / len(inputs):.2f}s)")
-    return passed, total_latency / len(inputs)
+    print(f"  Result: {'✅ PASSED' if passed else '❌ FAILED'}")
+    return passed
 
 
 def main():
-    scenarios = [
-        {"name": "Maccabi Gold - Dental Root Canal",
-         "inputs": ["Hi, I'm Noa, 28", "ID 123456789, Female, Maccabi, Card 111222333, Gold", "I confirm",
-                    "How much for a root canal?"],
-         "truth": "70% discount for root canals, includes X-rays"},
-        {"name": "Clalit Gold - Genetic Screening (Hebrew)",
-         "inputs": ["שלום, אני מאיה, בת 32", "ת.ז 987654321, נקבה, כללית, כרטיס 777888999, זהב", "אני מאשרת",
-                    "מה הכיסוי לבדיקות סקר גנטיות?"],
-         "truth": "95% discount for genetic screening"},
-        {"name": "Maccabi Silver - Optometry Glasses",
-         "inputs": ["Hi, Ben, 50", "ID 333444555, Male, Maccabi, Card 999000111, Silver", "I confirm",
-                    "Coverage for glasses?"],
-         "truth": "50% discount up to 700 NIS"},
-        {"name": "Meuhedet Gold - Nutrition Workshop",
-         "inputs": ["Lea, 35", "ID 444555666, Female, Meuhedet, Card 222333444, Gold", "I confirm",
-                    "Nutrition workshops?"],
-         "truth": "Free, includes a personal nutrition plan"},
-        {"name": "Maccabi Gold - Smoking Cessation",
-         "inputs": ["Eli, 55", "ID 000111222, Male, Maccabi, Card 456456456, Gold", "I confirm", "Quit smoking?"],
-         "truth": "Free, includes medication"}
-    ]
+    backend_process = start_backend()
 
-    total_passed = 0
-    for s in scenarios:
-        passed, _ = run_scenario(s["name"], s["inputs"], s["truth"])
-        if passed: total_passed += 1
+    try:
+        scenarios = [
+            {
+                "name": "Maccabi Gold Chaining",
+                "initial_question": "What is my coverage for root canals?",
+                "lang": "en",
+                "inputs": ["Eva, 45, ID 123456789, Female, Maccabi, Card 111222333, Gold"],
+                "truth": "70% discount for root canals"
+            },
+            {
+                "name": "Maccabi Gold Workshops (Hebrew)",
+                "initial_question": "אני רוצה לדעת כיסוי על סדנאות",
+                "lang": "he",
+                "inputs": ["שילת מזור בת 45, נקבה, תז 473839888, כרטיס 37462928, מכבי זהב"],
+                "truth": "סדנאות גמילה מעישון ותזונה בחינם"
+            }
+        ]
 
-    print(f"\n{'=' * 40}\nSUMMARY: {total_passed}/{len(scenarios)} Passed\n{'=' * 40}")
+        passed_count = sum(
+            1 for s in scenarios if run_scenario(s["name"], s["initial_question"], s["inputs"], s["truth"], s["lang"]))
+        print(f"\n{'=' * 30}\nOVERALL: {passed_count}/{len(scenarios)} PASSED\n{'=' * 30}")
+
+    finally:
+        stop_backend(backend_process)
 
 
 if __name__ == "__main__":

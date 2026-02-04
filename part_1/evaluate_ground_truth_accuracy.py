@@ -39,7 +39,7 @@ from validation_service import ValidationService, robust_post_processor  # type:
 # Ground-truth labels
 # ---------------------------------------------------------------------------
 TEST_SUITE: Dict[str, Dict[str, Any]] = {
-    "data/283_ex1.pdf": {
+    "phase2_data/283_ex1.pdf": {
         "lastName": "טננהוים", "firstName": "יהודה", "idNumber": "877524563", "gender": "זכר",
         "dateOfBirth": {"day": "02", "month": "02", "year": "1995"},
         "address": {"street": "הרמבם", "houseNumber": "16", "entrance": "1", "apartment": "12", "city": "אבן יהודה",
@@ -53,7 +53,7 @@ TEST_SUITE: Dict[str, Dict[str, Any]] = {
         "formReceiptDateAtClinic": {"day": "02", "month": "02", "year": "1999"},
         "medicalInstitutionFields": {"healthFundMember": "מאוחדת", "natureOfAccident": "", "medicalDiagnoses": ""}
     },
-    "data/283_ex2.pdf": {
+    "phase2_data/283_ex2.pdf": {
         "lastName": "הלוי", "firstName": "שלמה", "idNumber": "022456120", "gender": "זכר",
         "dateOfBirth": {"day": "14", "month": "10", "year": "1990"},
         "address": {"street": "חיים ויצמן", "houseNumber": "6", "entrance": "", "apartment": "34", "city": "יוקנעם",
@@ -66,7 +66,7 @@ TEST_SUITE: Dict[str, Dict[str, Any]] = {
         "formReceiptDateAtClinic": {"day": "03", "month": "07", "year": "2001"},
         "medicalInstitutionFields": {"healthFundMember": "כללית", "natureOfAccident": "", "medicalDiagnoses": ""}
     },
-    "data/283_ex3.pdf": {
+    "phase2_data/283_ex3.pdf": {
         "lastName": "יוחננוף", "firstName": "רועי", "idNumber": "0334521567", "gender": "זכר",
         "dateOfBirth": {"day": "03", "month": "03", "year": "1974"},
         "address": {"street": "המאיר", "houseNumber": "15", "entrance": "1", "apartment": "16", "city": "אלוני הבשן",
@@ -80,7 +80,7 @@ TEST_SUITE: Dict[str, Dict[str, Any]] = {
         "formReceiptDateAtClinic": {"day": "30", "month": "06", "year": "1999"},
         "medicalInstitutionFields": {"healthFundMember": "", "natureOfAccident": "", "medicalDiagnoses": ""}
     },
-    "data/283_raw.pdf": {
+    "phase2_data/283_raw.pdf": {
         "lastName": "", "firstName": "", "idNumber": "", "gender": "",
         "dateOfBirth": {"day": "", "month": "", "year": ""},
         "address": {"street": "", "houseNumber": "", "entrance": "", "apartment": "", "city": "", "postalCode": "",
