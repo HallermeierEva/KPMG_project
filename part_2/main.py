@@ -1,6 +1,7 @@
 """
 Improved Medical Chatbot Backend with FastAPI
 Refactored with service-oriented architecture & Turn Chaining
+
 """
 import uvicorn
 import json
@@ -37,7 +38,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize services
+# Initialize services (STATELESS - see services/__init__.py documentation)
+# These are singleton service instances that don't store user state
 llm_service = get_llm_service()
 rag_service = get_rag_service()
 validation_service = get_validation_service()
@@ -146,8 +148,6 @@ async def chat(request: ChatRequest):
                     logger.error(f"Turn chaining failed internally: {str(e)}")
                     # If it fails, we still want to show the user we finished registration
                     ai_content = "✅ הרישום הושלם. אנא שאל שוב את שאלתך כעת."
-                except:
-                    pass
 
         return ChatResponse(response=ai_content, extracted_profile=extracted_data, phase=current_phase)
     except Exception as e:

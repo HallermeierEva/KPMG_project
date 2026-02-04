@@ -54,6 +54,58 @@ KPMG_project-main/
 
 ---
 
+## Architecture Diagrams
+
+### Part 1: Document Processing Pipeline
+
+\`\`\`mermaid
+graph LR
+    A[User Upload PDF] --> B[OCR Service]
+    B --> C[Azure Document Intelligence]
+    C --> B
+    B --> D[Extraction Service]
+    D --> E[GPT-4o]
+    E --> D
+    D --> F[Validation Service]
+    F --> G[UI Display]
+    
+    style A fill:#e3f2fd
+    style G fill:#c8e6c9
+    style B fill:#fff9c4
+    style D fill:#fff9c4
+    style F fill:#fff9c4
+\`\`\`
+
+### Part 2: Chatbot Flow
+
+\`\`\`mermaid
+sequenceDiagram
+    participant U as User (Browser)
+    participant F as Frontend (Streamlit)
+    participant B as Backend (FastAPI)
+    participant AI as Azure OpenAI
+    participant KB as Knowledge Base
+    
+    U->>F: Send message
+    F->>F: Store in session_state
+    F->>B: POST /chat (message + history + profile)
+    B->>AI: Generate response
+    
+    alt Collection Phase
+        AI-->>B: Conversational response
+        B-->>F: Response + extracted profile
+        F->>F: Update session_state
+    else Q&A Phase
+        B->>KB: Get relevant context
+        KB-->>B: Filtered data (HMO + tier)
+        B->>AI: Answer with context
+        AI-->>B: Grounded answer
+        B-->>F: Response
+    end
+    
+    F-->>U: Display message
+\`\`\`
+
 ## 🚀 Quick Start
 
 ### Prerequisites

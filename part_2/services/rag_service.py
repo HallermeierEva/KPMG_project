@@ -8,6 +8,11 @@ from logger import logger
 from knowledge_base.ingest import get_ingestor, Document
 from knowledge_base.vector_store import get_vector_store, VectorStore
 
+from functools import lru_cache
+
+
+
+
 
 class RAGService:
     """Service for Retrieval-Augmented Generation from knowledge base"""
@@ -18,10 +23,15 @@ class RAGService:
         self.ingestor = get_ingestor(data_dir)
         # Simple optional vector store (can be extended later)
         self.vector_store: Optional[VectorStore] = get_vector_store()
-        
-    
-    def get_all_medical_context(self, use_cache: bool = True) -> str:
+
+    @lru_cache(maxsize=1)
+    def get_all_medical_context(self) -> str:
         """
+        Load all medical context with caching.
+
+        Note: This cache is SHARED across all requests (not user-specific),
+        so it doesn't violate statelessness. It's a performance optimization
+        for read-only data that never changes.
         Reads all HTML files from the knowledge base and formats them for LLM context.
         
         Args:

@@ -311,8 +311,23 @@ def get_all_medical_context():
 4. **Voice Input**: Add speech-to-text
 5. **Mobile App**: Native iOS/Android versions
 
-## License
-[Your License Here]
+### Stateless Design Verification
+
+The backend is **truly stateless**:
+
+1. **No user sessions:** Backend doesn't store user data
+2. **No conversation memory:** History passed from client each time
+3. **Concurrent-safe:** Multiple users don't interfere
+4. **Horizontal scaling:** Can run multiple backend instances
+
+Service initialization at startup is for efficiency (shared resources),
+not state storage. Each request is independent.
+
+Test concurrency:
+- Open 3 browser windows, all can chat simultaneously
+- No interference between users
+
+
 
 ## Support
 For issues, please check the logs first, then contact support.
