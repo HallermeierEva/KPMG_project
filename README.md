@@ -66,7 +66,7 @@ python --version
 ```bash
 # Clone repository
 git clone <your-repo-url>
-cd KPMG_project-main
+cd KPMG_project
 
 # Create virtual environment
 python -m venv .venv
@@ -114,6 +114,7 @@ Extracts structured data from Israeli National Insurance Institute (ביטוח �
 ```bash
 cd part_1
 chmod +x run_part1.sh
+brew services start redis  (for Mac)
 ./run_part1.sh
 ```
 

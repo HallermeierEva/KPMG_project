@@ -203,7 +203,7 @@ if uploaded_file:
                 st.error(f"❌ Extraction Failed: {extraction_result.get('error')}")
                 st.stop()
 
-            extracted_data = extraction_result["phase2_data"]
+            extracted_data = extraction_result["data"]
 
             # 3. Run Validation microservice
             val_result = call_validation_service(extraction_result)

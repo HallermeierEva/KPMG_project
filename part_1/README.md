@@ -17,7 +17,6 @@ It consists of:
 part_1/
 ├── run_part1.sh                    # Orchestrator: starts all services + Streamlit UI
 ├── evaluate_ground_truth_accuracy.py  # E2E evaluation against labeled PDFs in data/
-├── requirements.txt
 ├── pytest.ini                       # Root pytest config (targets ocr-service/tests)
 ├── data/
 │   ├── 283_ex1.pdf
@@ -58,7 +57,6 @@ From the `part_1` directory:
 ```bash
 python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\\Scripts\\activate
-pip install -r requirements.txt
 ```
 
 ### 2. Configure environment variables
@@ -251,8 +249,3 @@ The `ExtractedData` model in `shared/models.py` defines the canonical output. A 
 - Validation shows many errors
   - Make sure IDs and phones in the ground truth are correct.
   - Remember that the validator is strict about phone length and leading zeros.
-
-## Notes
-
-- Python bytecode caches (`__pycache__`) and ad-hoc debug logs are intentionally not part of the core implementation.
-- The removed legacy single-file scripts (`config.py`, top-level `test_ocr.py` / `test_extraction.py`, etc.) have been replaced by the microservice layout described above.
