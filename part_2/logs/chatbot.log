@@ -252,3 +252,105 @@
 2026-02-04 13:28:59,866 - INFO - Extracted Profile: {'Full Name': 'שילת מזור', 'ID': '473839888', 'Gender': 'נקבה', 'Age': '45', 'HMO': 'מכבי', 'Card Number': '37462928', 'Insurance Tier': 'זהב'}
 2026-02-04 13:28:59,866 - INFO - Chaining to answer original question: אני רוצה לדעת כיסוי על סדנאות
 2026-02-04 13:29:02,778 - INFO - LLM response received - Length: 511
+2026-02-05 10:30:40,486 - INFO - Azure OpenAI client initialized successfully
+2026-02-05 10:30:40,497 - INFO - Embedding service initialized with deployment: text-embedding-ada-002
+2026-02-05 10:30:40,500 - INFO - Starting Medical Chatbot API server...
+2026-02-05 10:30:54,260 - INFO - Azure OpenAI client initialized successfully
+2026-02-05 10:30:54,272 - INFO - Embedding service initialized with deployment: text-embedding-ada-002
+2026-02-05 10:30:54,275 - INFO - Starting Medical Chatbot API server...
+2026-02-05 10:31:37,060 - INFO - Azure OpenAI client initialized successfully
+2026-02-05 10:31:37,070 - INFO - Embedding service initialized with deployment: text-embedding-ada-002
+2026-02-05 10:31:37,072 - INFO - Starting Medical Chatbot API server...
+2026-02-05 10:33:16,282 - INFO - LLM response received - Length: 160
+2026-02-05 10:33:26,301 - INFO - LLM response received - Length: 85
+2026-02-05 10:33:44,009 - INFO - LLM response received - Length: 73
+2026-02-05 10:33:56,810 - INFO - LLM response received - Length: 47
+2026-02-05 10:34:04,292 - INFO - LLM response received - Length: 48
+2026-02-05 10:34:08,224 - INFO - LLM response received - Length: 20
+2026-02-05 10:34:17,288 - INFO - LLM response received - Length: 51
+2026-02-05 10:34:22,716 - INFO - LLM response received - Length: 19
+2026-02-05 10:34:25,558 - INFO - LLM response received - Length: 56
+2026-02-05 10:34:30,809 - INFO - LLM response received - Length: 85
+2026-02-05 10:34:35,718 - INFO - LLM response received - Length: 86
+2026-02-05 10:34:39,039 - INFO - LLM response received - Length: 45
+2026-02-05 10:34:48,122 - INFO - LLM response received - Length: 176
+2026-02-05 10:34:57,838 - INFO - LLM response received - Length: 244
+2026-02-05 10:35:05,313 - INFO - LLM response received - Length: 221
+2026-02-05 10:35:13,199 - INFO - LLM response received - Length: 154
+2026-02-05 10:35:13,199 - INFO - Detected [COMPLETE] tag. Attempting turn chaining...
+2026-02-05 10:35:13,199 - INFO - Extracted Profile: {'Full Name': 'רוזה פרק', 'ID': '454647484', 'Gender': 'נקבה', 'Age': '56', 'HMO': 'מכבי', 'Card Number': '563839383', 'Insurance Tier': 'זהב'}
+2026-02-05 10:35:13,200 - ERROR - Turn chaining failed internally: name 'use_cache' is not defined
+2026-02-05 10:35:27,067 - ERROR - Chat failed: name 'use_cache' is not defined
+2026-02-05 10:35:40,540 - INFO - LLM response received - Length: 157
+2026-02-05 10:35:40,541 - INFO - Detected [COMPLETE] tag. Attempting turn chaining...
+2026-02-05 10:35:40,541 - INFO - Extracted Profile: {'Full Name': 'Lisa Levi', 'ID': '456373839', 'Gender': 'Female', 'Age': 34, 'HMO': 'מיוחדת', 'Card Number': '565373738', 'Insurance Tier': 'ארד'}
+2026-02-05 10:35:40,541 - ERROR - Turn chaining failed internally: name 'use_cache' is not defined
+2026-02-05 10:35:54,869 - ERROR - Chat failed: name 'use_cache' is not defined
+2026-02-05 10:39:42,578 - INFO - Azure OpenAI client initialized successfully
+2026-02-05 10:39:42,590 - INFO - Embedding service initialized with deployment: text-embedding-ada-002
+2026-02-05 10:39:42,590 - INFO - Ingesting 6 files from phase2_data
+2026-02-05 10:39:42,630 - INFO - Successfully ingested 6 documents
+2026-02-05 10:39:42,630 - INFO - Loaded 6 documents from phase2_data
+2026-02-05 10:41:48,671 - INFO - Azure OpenAI client initialized successfully
+2026-02-05 10:41:48,682 - INFO - Embedding service initialized with deployment: text-embedding-ada-002
+2026-02-05 10:41:48,685 - INFO - Starting Medical Chatbot API server...
+2026-02-05 10:42:07,099 - INFO - LLM response received - Length: 110
+2026-02-05 10:42:14,167 - INFO - LLM response received - Length: 73
+2026-02-05 10:42:18,461 - INFO - LLM response received - Length: 52
+2026-02-05 10:42:22,249 - INFO - LLM response received - Length: 45
+2026-02-05 10:42:26,655 - INFO - LLM response received - Length: 101
+2026-02-05 10:42:30,442 - INFO - LLM response received - Length: 65
+2026-02-05 10:42:36,484 - INFO - LLM response received - Length: 60
+2026-02-05 10:42:41,919 - INFO - LLM response received - Length: 278
+2026-02-05 10:42:48,775 - INFO - LLM response received - Length: 155
+2026-02-05 10:42:48,775 - INFO - Detected [COMPLETE] tag. Attempting turn chaining...
+2026-02-05 10:42:48,776 - INFO - Extracted Profile: {'Full Name': 'Eva Klein', 'ID': '647483930', 'Gender': 'Female', 'Age': 47, 'HMO': 'מכבי', 'Card Number': '748484930', 'Insurance Tier': 'זהב'}
+2026-02-05 10:42:48,776 - INFO - Ingesting 6 files from phase2_data
+2026-02-05 10:42:48,826 - INFO - Successfully ingested 6 documents
+2026-02-05 10:42:48,826 - INFO - Loaded 6 documents from phase2_data
+2026-02-05 10:42:50,679 - INFO - Chaining to answer original question: hello
+2026-02-05 10:42:52,458 - INFO - LLM response received - Length: 155
+2026-02-05 10:43:03,259 - INFO - LLM response received - Length: 213
+2026-02-05 10:43:10,174 - INFO - LLM response received - Length: 121
+2026-02-05 10:43:48,982 - INFO - LLM response received - Length: 60
+2026-02-05 10:44:10,075 - INFO - LLM response received - Length: 109
+2026-02-05 10:44:23,554 - ERROR - Azure OpenAI API error: Error code: 400 - {'error': {'message': "The response was filtered due to the prompt triggering Azure OpenAI's content management policy. Please modify your prompt and retry. To learn more about our content filtering policies please read our documentation: https://go.microsoft.com/fwlink/?linkid=2198766", 'type': None, 'param': 'prompt', 'code': 'content_filter', 'status': 400, 'innererror': {'code': 'ResponsibleAIPolicyViolation', 'content_filter_result': {'hate': {'filtered': False, 'severity': 'safe'}, 'self_harm': {'filtered': False, 'severity': 'safe'}, 'sexual': {'filtered': True, 'severity': 'medium'}, 'violence': {'filtered': False, 'severity': 'safe'}}}}}
+2026-02-05 10:44:23,554 - ERROR - Chat failed: Error code: 400 - {'error': {'message': "The response was filtered due to the prompt triggering Azure OpenAI's content management policy. Please modify your prompt and retry. To learn more about our content filtering policies please read our documentation: https://go.microsoft.com/fwlink/?linkid=2198766", 'type': None, 'param': 'prompt', 'code': 'content_filter', 'status': 400, 'innererror': {'code': 'ResponsibleAIPolicyViolation', 'content_filter_result': {'hate': {'filtered': False, 'severity': 'safe'}, 'self_harm': {'filtered': False, 'severity': 'safe'}, 'sexual': {'filtered': True, 'severity': 'medium'}, 'violence': {'filtered': False, 'severity': 'safe'}}}}}
+2026-02-05 10:46:12,293 - INFO - Azure OpenAI client initialized successfully
+2026-02-05 10:46:12,304 - INFO - Embedding service initialized with deployment: text-embedding-ada-002
+2026-02-05 10:46:12,306 - INFO - Starting Medical Chatbot API server...
+2026-02-05 10:46:37,843 - INFO - LLM response received - Length: 168
+2026-02-05 10:49:15,942 - INFO - Azure OpenAI client initialized successfully
+2026-02-05 10:49:15,950 - INFO - Embedding service initialized with deployment: text-embedding-ada-002
+2026-02-05 10:49:15,952 - INFO - Starting Medical Chatbot API server...
+2026-02-05 10:49:49,432 - INFO - LLM response received - Length: 339
+2026-02-05 10:50:28,341 - INFO - LLM response received - Length: 222
+2026-02-05 10:50:40,527 - INFO - LLM response received - Length: 155
+2026-02-05 10:50:40,527 - INFO - Detected [COMPLETE] tag. Attempting turn chaining...
+2026-02-05 10:50:40,527 - INFO - Extracted Profile: {'Full Name': 'רפאלה לוי', 'ID': '473839383', 'Gender': 'נקבה', 'Age': '38', 'HMO': 'מכבי', 'Card Number': '384728394', 'Insurance Tier': 'זהב'}
+2026-02-05 10:50:40,527 - INFO - Ingesting 6 files from phase2_data
+2026-02-05 10:50:40,575 - INFO - Successfully ingested 6 documents
+2026-02-05 10:50:40,575 - INFO - Loaded 6 documents from phase2_data
+2026-02-05 10:50:42,438 - INFO - Chaining to answer original question: שלום, יש לי שאלות על כיסוי על רופא שיניים
+2026-02-05 10:50:45,688 - INFO - LLM response received - Length: 516
+2026-02-05 10:50:56,808 - INFO - LLM response received - Length: 69
+2026-02-05 10:51:51,365 - INFO - Azure OpenAI client initialized successfully
+2026-02-05 10:51:51,375 - INFO - Embedding service initialized with deployment: text-embedding-ada-002
+2026-02-05 10:51:51,378 - INFO - Starting Medical Chatbot API server...
+2026-02-05 10:51:52,123 - INFO - Ingesting 6 files from phase2_data
+2026-02-05 10:51:52,160 - INFO - Successfully ingested 6 documents
+2026-02-05 10:51:52,160 - INFO - Loaded 6 documents from phase2_data
+2026-02-05 10:51:55,688 - INFO - LLM response received - Length: 431
+2026-02-05 10:51:56,714 - INFO - LLM response received - Length: 262
+2026-02-05 10:51:57,635 - INFO - LLM response received - Length: 149
+2026-02-05 10:51:57,635 - INFO - Detected [COMPLETE] tag. Attempting turn chaining...
+2026-02-05 10:51:57,635 - INFO - Extracted Profile: {'Full Name': 'Eva', 'ID': '123456789', 'Gender': 'Female', 'Age': 45, 'HMO': 'מכבי', 'Card Number': '111222333', 'Insurance Tier': 'זהב'}
+2026-02-05 10:51:57,636 - INFO - Chaining to answer original question: What is my coverage for root canals?
+2026-02-05 10:51:58,864 - INFO - LLM response received - Length: 85
+2026-02-05 10:52:01,419 - INFO - LLM response received - Length: 254
+2026-02-05 10:52:02,755 - INFO - LLM response received - Length: 216
+2026-02-05 10:52:03,476 - INFO - LLM response received - Length: 152
+2026-02-05 10:52:03,477 - INFO - Detected [COMPLETE] tag. Attempting turn chaining...
+2026-02-05 10:52:03,477 - INFO - Extracted Profile: {'Full Name': 'שילת מזור', 'ID': '473839888', 'Gender': 'נקבה', 'Age': 45, 'HMO': 'מכבי', 'Card Number': '37462928', 'Insurance Tier': 'זהב'}
+2026-02-05 10:52:03,477 - INFO - Chaining to answer original question: אני רוצה לדעת כיסוי על סדנאות
+2026-02-05 10:52:06,647 - INFO - LLM response received - Length: 498
