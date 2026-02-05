@@ -6,7 +6,7 @@ A microservice-based chatbot system that answers questions about medical service
 ## Architecture
 
 ### Backend (FastAPI Microservice)
-- **File**: `main_improved.py`
+- **File**: `main.py`
 - **Port**: 8000
 - **Type**: Stateless RESTful API
 - **Features**:
@@ -49,10 +49,10 @@ AZURE_OPENAI_DEPLOYMENT_NAME=your-deployment-name
 ```
 project/
 ├── .env                          # Environment variables
-├── main_improved.py              # FastAPI backend
+├── main.py              # FastAPI backend
 ├── app.py                        # Streamlit frontend
-├── processor_improved.py         # Data processing & validation
-├── prompts_improved.py           # LLM prompts
+├── processor.py         # Data processing & validation
+├── prompts.py           # LLM prompts
 ├── logger.py                     # Logging configuration
 ├── test_bot.py                   # Testing suite
 ├── phase2_data/                  # Knowledge base (HTML files)
@@ -70,7 +70,7 @@ project/
 
 ### Step 1: Start the Backend
 ```bash
-python main_improved.py
+python main.py
 ```
 
 Expected output:
@@ -272,9 +272,9 @@ Logs are written to `logs/chatbot.log`:
 3. Look for errors in `logs/chatbot.log`
 
 ### LLM not responding correctly
-1. Check prompt in `prompts_improved.py`
+1. Check prompt in `prompts.py`
 2. Verify context is being loaded (check health endpoint)
-3. Increase `max_tokens` in `main_improved.py` if responses are cut off
+3. Increase `max_tokens` in `main.py` if responses are cut off
 
 ## Performance Optimization
 
@@ -282,7 +282,7 @@ Logs are written to `logs/chatbot.log`:
 1. Use `gunicorn` instead of `uvicorn`:
 ```bash
 pip install gunicorn
-gunicorn -w 4 -k uvicorn.workers.UvicornWorker main_improved:app
+gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app
 ```
 
 2. Enable caching for knowledge base:

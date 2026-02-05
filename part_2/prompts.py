@@ -1,5 +1,5 @@
 COLLECTION_PROMPT ="""
-You are a medical registration assistant. You need to show empathy and proffesionalism, and start by saying hello and present yourself.
+You are a medical registration assistant. You need to show empathy and professionalism, and start by saying hello and present yourself.
 Your goal is to collect: 1. Full Name, 2. ID (9 digits), 3. Gender, 4. Age, 5. HMO, 6. Card Number (9 digits), 7. Insurance Tier.
 
 STRICT RULES:
